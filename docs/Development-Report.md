@@ -1,6 +1,8 @@
-# openCX-*your module name* Development Report
+# openCX-esofagos Development Report
 
 Welcome to the documentation pages of the GuessIt of **openCX**!
+
+![](images/logo.svg)
 
 You can find here detailed about the (sub)product, hereby mentioned as module, from a high-level vision to low-level implementation decisions, a kind of Software Development Report (see [template](https://github.com/softeng-feup/open-cx/blob/master/docs/templates/Development-Report.md)), organized by discipline (as of RUP): 
 
@@ -55,7 +57,7 @@ Therefore, the participants get to play and learn with each other, while having 
 
 ### Use cases diagram
 
-![Use Cases Diagram](images\UseCasesDiagram.png)
+![Use Cases Diagram](images/UseCasesDiagram.png)
 
 #### **Create game:**
 * **Actor:**
@@ -107,97 +109,135 @@ In order to write its guesses, the player must first join the game session. In t
 1. The Guesser writes its guess.
 2. If the guess is close to the right answer, it isn’t shown in the chat, and a warning is displayed telling the Guesser that it’s not far from being correct.
 
-* *Or:*
+* **Or:**
 1. The Guesser writes its guess.
 2. If the guess is wrong, it will be shown to all the guessers.
 
 
 ### User stories
 
-> [Player: Guesser or Leader; Speaker]
+> Actors: Guesser or Leader; Speaker
 
 * **User Story 1:**
 As the conference speaker, I would like to have an admin panel in order to create the next game session.
+
+| ![](images/UserStories/panel1.png) | ![](images/UserStories/panel3.png) | ![](images/UserStories/panel4.png) |
+| --- | --- | --- |
+
 **Value:** Must have
 **Effort:** L
 
+-----
+
 * **User Story 2:**
 As the conference speaker, I would like to define the starting time and the duration of the game, so that I don’t have to worry about unforeseen delays.
+
+![](images/UserStories/panel4.png)
+
 **Value:** Must Have
 **Effort:** M
+
+-----
 
 * **User Story 3:**
 As the conference speaker, I would like to suggest a list of concepts related to my session, so that it can be used by the app to include them in the game.
+
+![](images/UserStories/panel4.png)
+
 **Value:** Must Have
 **Effort:** M
+
+-----
 
 * **User Story 4:**
-As a guesser, I would like to know if I'm close to the answer, by miswriting it or swapping some letters.
-**Value:** Could Have
-**Effort:** M
-
-* **User Story 5:**
-As a leader, I would like the game to give some clues about the word if the players are taking too long to guess it, like saying how many letters it has, for example.
-**Value:** Could Have
-**Effort:** S
-
-* **User Story 5:**
-As a player, I would like to see a ranking of all the players, based on the points they made.
-**Value:** Could Have
-**Effort:** M
-
-* **User Story 6:**
-As the conference speaker, I would like to see the statistics of the game, so I can know which words were the most difficult to guess, in order to better explain those topics to the audience.
-**Value:** Could Have
-**Effort:** M
-
-* **User Story 7:**
 As a player, I would like to participate in the game anonymously, so I can feel more at ease and freely write my guesses without the fear of failing.
+
+![](images/UserStories/panel2.png)
+
 **Value:** Must Have
 **Effort:** S
 
-* **User Story 8:**
+-----
+
+* **User Story 5:**
 As a player, I would like to see all the other players’ missed answers in a live chat, so that I can get some insights about my potential guesses.
+
+![](images/UserStories/panel5.png)
+
 **Value:** Must Have
 **Effort:** XL
 
-* **User Story 9:**
-As the conference speaker, I would like to generate a final report with the word definitions given by the players, so that I can discuss them with the audience.
+-----
+
+* **User Story 6:**
+As a guesser, I would like to know if I'm close to the answer, by miswriting it or swapping some letters.
+
+![](images/UserStories/panel5.png)
+
 **Value:** Could Have
 **Effort:** M
 
+-----
+
+* **User Story 7:**
+As a leader, I would like the game to give some clues about the word if the players are taking too long to guess it, like writing my definitions of it or saying how many letters it has, for example.
+
+![](images/UserStories/panel6.png)
+
+**Value:** Must Have
+**Effort:** M
+
+-----
+
+* **User Story 8:**
+As a player, I would like to see a ranking of all the players, based on the points they made.
+
+**Value:** Could Have
+**Effort:** M
+
+-----
+
+* **User Story 9:**
+As the conference speaker, I would like to see the statistics of the game, so I can know which words were the most difficult to guess, in order to better explain those topics to the audience.
+
+**Value:** Could Have
+**Effort:** M
+
+-----
+
+* **User Story 10:**
+As the conference speaker, I would like to generate a final report with the word definitions given by the players, so that I can discuss them with the audience.
+
+**Value:** Could Have
+**Effort:** M
+
+-----
 
 ### Domain model
 
-![Domain Model Diagram](images\DomainModelDiagram.png)
+![Domain Model Diagram](images/DomainModelDiagram.png)
 
 ---
 
 ## Architecture and Design
-The architecture of a software system encompasses the set of key decisions about its overall organization. 
-
-A well written architecture document is brief but reduces the amount of time it takes new programmers to a project to understand the code to feel able to make modifications and enhancements.
-
-To document the architecture requires describing the decomposition of the system in their parts (high-level components) and the key behaviors and collaborations between them. 
-
-In this section you should start by briefly describing the overall components of the project and their interrelations. You should also describe how you solved typical problems you may have encountered, pointing to well-known architectural and design patterns, if applicable.
 
 ### Logical architecture
-The purpose of this subsection is to document the high-level logical structure of the code, using a UML diagram with logical packages, without the worry of allocating to components, processes or machines.
-
-It can be beneficial to present the system both in a horizontal or vertical decomposition:
-* horizontal decomposition may define layers and implementation concepts, such as the user interface, business logic and concepts; 
-* vertical decomposition can define a hierarchy of subsystems that cover all layers of implementation.
 
 ### Physical architecture
-The goal of this subsection is to document the high-level physical structure of the software system (machines, connections, software components installed, and their dependencies) using UML deployment diagrams or component diagrams (separate or integrated), showing the physical structure of the system.
-
-It should describe also the technologies considered and justify the selections made. Examples of technologies relevant for openCX are, for example, frameworks for mobile applications (Flutter vs ReactNative vs ...), languages to program with microbit, and communication with things (beacons, sensors, etc.).
 
 ### Prototype
-To help on validating all the architectural, design and technological decisions made, we usually implement a vertical prototype, a thin vertical slice of the system.
 
-In this subsection please describe in more detail which, and how, user(s) story(ies) were implemented.
+For the application prototype, we aggregated the most relevant User Stories and created a vertical visual prototype. Clicking the buttons triggers the expected flow that the future app will have, navigating through the different screens and states of the application.
+
+The general user interface structure is set and the work on the backend service provider has also begun. The app, as testified, will have a first screen with two possible ways of entering: 
+* The *Play* button for Players to choose the nickname and join the game;
+* The *Enter As Admin* button that leads the user to the admin panel, if he knows the admin code.
+
+The Admin creates the game, filling the forms and setting the options, and the Players then join it, within a screen that contains a live chat and the other necessary components.
+
+[Our Vertical Prototype with Figma](https://www.figma.com/proto/WvP0fsV2j0afVBldhMCfyF/Story-1?node-id=1%3A3&scaling=scale-down)
+
+![](images/prototype.gif)
 
 ---
 
