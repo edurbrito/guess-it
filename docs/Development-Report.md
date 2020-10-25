@@ -221,9 +221,28 @@ As the conference speaker, I would like to generate a final report with the word
 
 ## Architecture and Design
 
+The architecture of a software system encompasses the set of key decisions about its overall organization.
+
 ### Logical architecture
 
+Our high-level structure will follow the MVC Architectural Pattern, as it is a good standard for this type of project.
+
+Firstly comes the Model, that contains all the application data, including the game session settings, the players' info, and all the chat related data. 
+
+Next, it's the View, representing the concrete display of the app state and data for its users. 
+
+Finally, the Controller, the one connecting the other parts, which consists of interfaces that aggregate all the work and, through the users' course of actions, generate or trigger the corresponding functionalities.
+
 ### Physical architecture
+
+![Our Physical Architecture](images/physical.png)
+The physical architecture of our project relies on two distinct blocks. 
+
+* The Client Side that represents the GuessIt Flutter App, installed on the user's smartphone. 
+  
+* The Server Side, where the controller will live, containing a Flask API, as a SocketIO implementation, and a connected SQL database to store and persist the needed data. 
+
+Both sides communicate over HTTPS with some required and provided interfaces to simplify all the process. As mentioned, the technologies considered were Flutter, for the mobile UI, as it was globally accepted by all the class, and Flask + SQL, for the server, as a very lightweight and simple combination, that suits perfectly our project needs.
 
 ### Prototype
 
