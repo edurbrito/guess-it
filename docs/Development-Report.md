@@ -225,6 +225,8 @@ The architecture of a software system encompasses the set of key decisions about
 
 ### Logical architecture
 
+![Our Logical Architecture](images/logical.png)
+
 Our high-level structure will follow the MVC Architectural Pattern, as it is a good standard for this type of project.
 
 Firstly comes the Model, that contains all the application data, including the game session settings, the players' info, and all the chat related data. 
