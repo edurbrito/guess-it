@@ -125,6 +125,7 @@ As the conference speaker, I would like to have an admin panel in order to creat
 | --- | --- | --- |
 
 **Value:** Must have
+
 **Effort:** L
 
 -----
@@ -135,6 +136,7 @@ As the conference speaker, I would like to define the starting time and the dura
 ![](images/UserStories/panel4.png)
 
 **Value:** Must Have
+
 **Effort:** M
 
 -----
@@ -145,6 +147,7 @@ As the conference speaker, I would like to suggest a list of concepts related to
 ![](images/UserStories/panel4.png)
 
 **Value:** Must Have
+
 **Effort:** M
 
 -----
@@ -155,6 +158,7 @@ As a player, I would like to participate in the game anonymously, so I can feel 
 ![](images/UserStories/panel2.png)
 
 **Value:** Must Have
+
 **Effort:** S
 
 -----
@@ -165,6 +169,7 @@ As a player, I would like to see all the other players’ missed answers in a li
 ![](images/UserStories/panel5.png)
 
 **Value:** Must Have
+
 **Effort:** XL
 
 -----
@@ -175,6 +180,7 @@ As a guesser, I would like to know if I'm close to the answer, by miswriting it 
 ![](images/UserStories/panel5.png)
 
 **Value:** Could Have
+
 **Effort:** M
 
 -----
@@ -185,6 +191,7 @@ As a leader, I would like the game to give some clues about the word if the play
 ![](images/UserStories/panel6.png)
 
 **Value:** Must Have
+
 **Effort:** M
 
 -----
@@ -193,6 +200,7 @@ As a leader, I would like the game to give some clues about the word if the play
 As a player, I would like to see a ranking of all the players, based on the points they made.
 
 **Value:** Could Have
+
 **Effort:** M
 
 -----
@@ -201,6 +209,7 @@ As a player, I would like to see a ranking of all the players, based on the poin
 As the conference speaker, I would like to see the statistics of the game, so I can know which words were the most difficult to guess, in order to better explain those topics to the audience.
 
 **Value:** Could Have
+
 **Effort:** M
 
 -----
@@ -209,6 +218,7 @@ As the conference speaker, I would like to see the statistics of the game, so I 
 As the conference speaker, I would like to generate a final report with the word definitions given by the players, so that I can discuss them with the audience.
 
 **Value:** Could Have
+
 **Effort:** M
 
 -----
@@ -217,7 +227,15 @@ As the conference speaker, I would like to generate a final report with the word
 
 ![Domain Model Diagram](images/DomainModelDiagram.png)
 
----
+The project is constructed on top of a very simple structure and concept. There is a scheduled session, with its own game, where the players need to guess the word described by the **Leader**.
+
+To conceive this idea, three main classes were created. The **GuessItSession** class is the one in charge of the words that can be used in the game. It represents the session itself and makes the connection between the **Speaker** class (the orator) and the **Schedule** class (the Time and Duration of the session).
+
+For the player structure, we created an abstract class that can be instantiated either by a **Guesser** or a **Leader** class. In each game, the **Leader** can only be one player, whereas the other participants shall be all guessers. To represent the guesser answer we opted for the inclusion of the design pattern *State*. This state can either be **CorrectAnswer** (where the word guessed is the correct one), **CloseAnswer** (meaning the answer is partially right. For example, let's suppose the guesser wrote "guesit" instead of "guessit". The player would likely assume its word was wrong, when in fact is just misspelt. With this state, instead of the word being written to the chat, the player will be informed its word is almost correct) and at last the **IncorrectAnswer** (showing the guessed word is totally incorrect).
+
+However, the central class of the project is the **GameRound** class. This class makes the connection between the **Session** itself and all the players/participants present at the conference. It is responsible for the game features, such as the **Leader** word, the time remaining, the points to be given and the definitions chosen by the **Leader**.
+
+----
 
 ## Architecture and Design
 
