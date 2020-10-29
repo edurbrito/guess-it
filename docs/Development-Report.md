@@ -1,6 +1,8 @@
-# openCX-*your module name* Development Report
+# openCX-esofagos Development Report
 
 Welcome to the documentation pages of the GuessIt of **openCX**!
+
+![](images/logo.svg)
 
 You can find here detailed about the (sub)product, hereby mentioned as module, from a high-level vision to low-level implementation decisions, a kind of Software Development Report (see [template](https://github.com/softeng-feup/open-cx/blob/master/docs/templates/Development-Report.md)), organized by discipline (as of RUP): 
 
@@ -53,78 +55,228 @@ Therefore, the participants get to play and learn with each other, while having 
 ---
 ## Requirements
 
-In this section, you should describe all kinds of requirements for your module: functional and non-functional requirements.
+### Use cases diagram
 
-Start by contextualizing your module, describing the main concepts, terms, roles, scope and boundaries of the application domain addressed by the project.
+![Use Cases Diagram](images/UseCasesDiagram.png)
 
-### Use case diagram
+#### **Create game:**
+* **Actor:**
+Conference Speaker
+* **Description:**
+This use case exists so that the speaker can define the game schedule (duration and starting time) and the list of words related to the session to be used in it.
+* **Preconditions and Postconditions:** 
+In order to set the game definitions, the conference speaker must first login into the application. After this use case, a game session will be created, and any conference participant may join.
+* **Normal Flow:**
+1. The conference speaker presses the Login button, to get admin access to the application.
+2. The conference speaker inserts the admin code.
+3. If the code is accepted, admin access to the application is granted to the speaker.
+4. After this, the speaker chooses the starting time and duration of the game, as well as the list of words.
+ 
+* **Alternative Flows and Exceptions:**
+1. The conference speaker presses the Login button, to get admin access to the application.
+2. The conference speaker inserts the admin code.
+3. If the code is rejected, admin access to the application is denied to the speaker.
+4. The speaker can then retype the code, and proceed as normal.
+ 
+ 
+#### **Post definitions:**
+* **Actor:**
+Leader (extends Player)
+* **Description:**
+This use case exists so that the current game leader can write its definitions of the current word and show them to the guessers.
+* **Preconditions and Postconditions:**
+In order to post a definition, the player must first join the game session. In the end, the player’s definitions will be shown to all the other players in the live chat.
+* **Normal Flow:**
+1. While playing, the player may get the Leader role - he must then write some definitions and send them to the chat.
+2. If the definition is allowed and checked by the system, it will be shown to all the guessers.
+* **Alternative Flows and Exceptions:**
+1. While playing, the player may get the Leader role - he must then write some definitions and send them to the chat.
+2. If the definition is not allowed by the system, it will be hidden and the leader gets a warning.
+3. The leader can then retype his sentence, and proceed as normal.
 
-Create a use-case diagram in UML with all high-level use cases possibly addressed by your module.
 
-Give each use case a concise, results-oriented name. Use cases should reflect the tasks the user needs to be able to accomplish using the system. Include an action verb and a noun. 
+#### **Post guesses:**
+* **Actor:** 
+Guesser (extends Player)
+* **Description:**
+This use case exists so that a Guesser can write its guesses of the right word and send them to the live chat.
+* **Preconditions and Postconditions:**
+In order to write its guesses, the player must first join the game session. In the end, the player’s guesses will be shown to all the other players in the live chat, unless its guess is right or close to the right answer.
+* **Normal Flow:**
+1. The Guesser writes its guess.
+2. If the guess is right, it isn’t shown in the chat, and a message is displayed telling the Guesser that it was correct.
+* **Alternative Flows and Exceptions:**
+1. The Guesser writes its guess.
+2. If the guess is close to the right answer, it isn’t shown in the chat, and a warning is displayed telling the Guesser that it’s not far from being correct.
 
-Briefly describe each use case mentioning the following:
+* **Or:**
+1. The Guesser writes its guess.
+2. If the guess is wrong, it will be shown to all the guessers.
 
-* **Actor**. Name only the actor that will be initiating this use case, i.e. a person or other entity external to the software system being specified who interacts with the system and performs use cases to accomplish tasks. 
-* **Description**. Provide a brief description of the reason for and outcome of this use case, or a high-level description of the sequence of actions and the outcome of executing the use case. 
-* **Preconditions and Postconditions**. Include any activities that must take place, or any conditions that must be true, before the use case can be started (preconditions) and postconditions. Describe also the state of the system at the conclusion of the use case execution (postconditions). 
-
-* **Normal Flow**. Provide a detailed description of the user actions and system responses that will take place during execution of the use case under normal, expected conditions. This dialog sequence will ultimately lead to accomplishing the goal stated in the use case name and description. This is best done as a numbered list of actions performed by the actor, alternating with responses provided by the system. 
-* **Alternative Flows and Exceptions**. Document other, legitimate usage scenarios that can take place within this use case, stating any differences in the sequence of steps that take place. In addition, describe any anticipated error conditions that could occur during execution of the use case, and define how the system is to respond to those conditions. 
 
 ### User stories
-This section will contain the requirements of the product described as **user stories**, organized in a global **[user story map](https://plan.io/blog/user-story-mapping/)** with **user roles** or **themes**.
 
-For each theme, or role, you may add a small description. User stories should be detailed in the tool you decided to use for project management (e.g. trello or github projects).
+> Actors: Guesser or Leader; Speaker
 
-A user story is a description of desired functionality told from the perspective of the user or customer. A starting template for the description of a user story is 
+* **User Story 1:**
+As the conference speaker, I would like to have an admin panel in order to create the next game session.
 
-*As a < user role >, I want < goal > so that < reason >.*
+| ![](images/UserStories/panel1.png) | ![](images/UserStories/panel3.png) | ![](images/UserStories/panel4.png) |
+| --- | --- | --- |
 
+**Value:** Must have
 
-**INVEST in good user stories**. 
-You may add more details after, but the shorter and complete, the better. In order to decide if the user story is good, please follow the [INVEST guidelines](https://xp123.com/articles/invest-in-good-stories-and-smart-tasks/).
+**Effort:** L
 
-**User interface mockups**.
-After the user story text, you should add a draft of the corresponding user interfaces, a simple mockup or draft, if applicable.
+-----
 
-**Acceptance tests**.
-For each user story you should write also the acceptance tests (textually in Gherkin), i.e., a description of scenarios (situations) that will help to confirm that the system satisfies the requirements addressed by the user story.
+* **User Story 2:**
+As the conference speaker, I would like to define the starting time and the duration of the game, so that I don’t have to worry about unforeseen delays.
 
-**Value and effort**.
-At the end, it is good to add a rough indication of the value of the user story to the customers (e.g. [MoSCoW](https://en.wikipedia.org/wiki/MoSCoW_method) method) and the team should add an estimation of the effort to implement it, for example, using t-shirt sizes (XS, S, M, L, XL).
+![](images/UserStories/panel4.png)
+
+**Value:** Must Have
+
+**Effort:** M
+
+-----
+
+* **User Story 3:**
+As the conference speaker, I would like to suggest a list of concepts related to my session, so that it can be used by the app to include them in the game.
+
+![](images/UserStories/panel4.png)
+
+**Value:** Must Have
+
+**Effort:** M
+
+-----
+
+* **User Story 4:**
+As a player, I would like to participate in the game anonymously, so I can feel more at ease and freely write my guesses without the fear of failing.
+
+![](images/UserStories/panel2.png)
+
+**Value:** Must Have
+
+**Effort:** S
+
+-----
+
+* **User Story 5:**
+As a player, I would like to see all the other players’ missed answers in a live chat, so that I can get some insights about my potential guesses.
+
+![](images/UserStories/panel5.png)
+
+**Value:** Must Have
+
+**Effort:** XL
+
+-----
+
+* **User Story 6:**
+As a guesser, I would like to know if I'm close to the answer, by miswriting it or swapping some letters.
+
+![](images/UserStories/panel5.png)
+
+**Value:** Could Have
+
+**Effort:** M
+
+-----
+
+* **User Story 7:**
+As a leader, I would like the game to give some clues about the word if the players are taking too long to guess it, like writing my definitions of it or saying how many letters it has, for example.
+
+![](images/UserStories/panel6.png)
+
+**Value:** Must Have
+
+**Effort:** M
+
+-----
+
+* **User Story 8:**
+As a player, I would like to see a ranking of all the players, based on the points they made.
+
+**Value:** Could Have
+
+**Effort:** M
+
+-----
+
+* **User Story 9:**
+As the conference speaker, I would like to see the statistics of the game, so I can know which words were the most difficult to guess, in order to better explain those topics to the audience.
+
+**Value:** Could Have
+
+**Effort:** M
+
+-----
+
+* **User Story 10:**
+As the conference speaker, I would like to generate a final report with the word definitions given by the players, so that I can discuss them with the audience.
+
+**Value:** Could Have
+
+**Effort:** M
+
+-----
 
 ### Domain model
 
-To better understand the context of the software system, it is very useful to have a simple UML class diagram with all the key concepts (names, attributes) and relationships involved of the problem domain addressed by your module.
+![Domain Model Diagram](images/DomainModelDiagram.png)
 
----
+The project is constructed on top of a very simple structure and concept. There is a scheduled session, with its own game, where the players need to guess the word described by the **Leader**.
+
+To conceive this idea, three main classes were created. The **GuessItSession** class is the one in charge of the words that can be used in the game. It represents the session itself and makes the connection between the **Speaker** class (the orator) and the **Schedule** class (the Time and Duration of the session).
+
+For the player structure, we created an abstract class that can be instantiated either by a **Guesser** or a **Leader** class. In each game, the **Leader** can only be one player, whereas the other participants shall be all guessers. To represent the guesser answer we opted for the inclusion of the design pattern *State*. This state can either be **CorrectAnswer** (where the word guessed is the correct one), **CloseAnswer** (meaning the answer is partially right. For example, let's suppose the guesser wrote "guesit" instead of "guessit". The player would likely assume its word was wrong, when in fact is just misspelt. With this state, instead of the word being written to the chat, the player will be informed its word is almost correct) and at last the **IncorrectAnswer** (showing the guessed word is totally incorrect).
+
+However, the central class of the project is the **GameRound** class. This class makes the connection between the **Session** itself and all the players/participants present at the conference. It is responsible for the game features, such as the **Leader** word, the time remaining, the points to be given and the definitions chosen by the **Leader**.
+
+----
 
 ## Architecture and Design
-The architecture of a software system encompasses the set of key decisions about its overall organization. 
 
-A well written architecture document is brief but reduces the amount of time it takes new programmers to a project to understand the code to feel able to make modifications and enhancements.
-
-To document the architecture requires describing the decomposition of the system in their parts (high-level components) and the key behaviors and collaborations between them. 
-
-In this section you should start by briefly describing the overall components of the project and their interrelations. You should also describe how you solved typical problems you may have encountered, pointing to well-known architectural and design patterns, if applicable.
+The architecture of a software system encompasses the set of key decisions about its overall organization.
 
 ### Logical architecture
-The purpose of this subsection is to document the high-level logical structure of the code, using a UML diagram with logical packages, without the worry of allocating to components, processes or machines.
 
-It can be beneficial to present the system both in a horizontal or vertical decomposition:
-* horizontal decomposition may define layers and implementation concepts, such as the user interface, business logic and concepts; 
-* vertical decomposition can define a hierarchy of subsystems that cover all layers of implementation.
+![Our Logical Architecture](images/logical.png)
+
+Our high-level structure will follow the MVC Architectural Pattern, as it is a good standard for this type of project.
+
+Firstly comes the Model, that contains all the application data, including the game session settings, the players' info, and all the chat related data. 
+
+Next, it's the View, representing the concrete display of the app state and data for its users. 
+
+Finally, the Controller, the one connecting the other parts, which consists of interfaces that aggregate all the work and, through the users' course of actions, generate or trigger the corresponding functionalities.
 
 ### Physical architecture
-The goal of this subsection is to document the high-level physical structure of the software system (machines, connections, software components installed, and their dependencies) using UML deployment diagrams or component diagrams (separate or integrated), showing the physical structure of the system.
 
-It should describe also the technologies considered and justify the selections made. Examples of technologies relevant for openCX are, for example, frameworks for mobile applications (Flutter vs ReactNative vs ...), languages to program with microbit, and communication with things (beacons, sensors, etc.).
+![Our Physical Architecture](images/physical.png)
+The physical architecture of our project relies on two distinct blocks. 
+
+* The Client Side that represents the GuessIt Flutter App, installed on the user's smartphone. 
+  
+* The Server Side, where the controller will live, containing a Flask API, as a SocketIO implementation, and a connected SQL database to store and persist the needed data. 
+
+Both sides communicate over HTTPS with some required and provided interfaces to simplify all the process. As mentioned, the technologies considered were Flutter, for the mobile UI, as it was globally accepted by all the class, and Flask + SQL, for the server, as a very lightweight and simple combination, that suits perfectly our project needs.
 
 ### Prototype
-To help on validating all the architectural, design and technological decisions made, we usually implement a vertical prototype, a thin vertical slice of the system.
 
-In this subsection please describe in more detail which, and how, user(s) story(ies) were implemented.
+For the application prototype, we aggregated the most relevant User Stories and created a vertical visual prototype. Clicking the buttons triggers the expected flow that the future app will have, navigating through the different screens and states of the application.
+
+The general user interface structure is set and the work on the backend service provider has also begun. The app, as testified, will have a first screen with two possible ways of entering: 
+* The *Play* button for Players to choose the nickname and join the game;
+* The *Enter As Admin* button that leads the user to the admin panel, if he knows the admin code.
+
+The Admin creates the game, filling the forms and setting the options, and the Players then join it, within a screen that contains a live chat and the other necessary components.
+
+[Our Vertical Prototype with Figma](https://www.figma.com/proto/WvP0fsV2j0afVBldhMCfyF/Story-1?node-id=1%3A3&scaling=scale-down)
+
+![](images/prototype.gif)
 
 ---
 
