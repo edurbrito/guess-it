@@ -36,6 +36,8 @@ Thank you!
 
 * [Pedro Ponte](https://github.com/pedrovponte)
 
+* [Daniel Gonçalves](https://github.com/Esdeath-GK)
+
 ---
 
 ## Product Vision
