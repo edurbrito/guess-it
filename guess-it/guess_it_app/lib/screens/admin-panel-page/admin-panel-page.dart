@@ -148,7 +148,10 @@ class _AdminPanelState extends State<AdminPanel> {
             elevation: 5,
             colorBrightness: Brightness.dark,
             onPressed: () {
-              LandingPanel();
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => LandingPanel()),
+              );
             },
             child: Text(
               "SAVE",

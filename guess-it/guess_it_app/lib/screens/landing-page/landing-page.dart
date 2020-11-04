@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:guess_it_app/screens/admin-panel-page/admin-panel-page.dart';
 
 class LandingPanel extends StatelessWidget {
   @override
@@ -50,6 +51,12 @@ class LandingPanel extends StatelessWidget {
             ),
             Container(
               child: FlatButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AdminPanel()),
+                  );
+                },
                 child: Text(
                     'Enter as Admin',
                   style: TextStyle(
