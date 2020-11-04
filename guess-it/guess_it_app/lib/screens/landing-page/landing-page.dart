@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-class Landing extends StatefulWidget {
+class LandingPanel extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
