@@ -6,3 +6,5 @@ guess-it/guess_it_server/__pycache__/
 guess-it/guess_it_server/env/
 
 guess-it/guess_it_server/venv/
+
+guess-it/guess_it_server/database.db
