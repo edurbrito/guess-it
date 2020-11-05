@@ -1,0 +1,6 @@
+PRAGMA FOREIGN_KEYS = ON;
+
+CREATE TABLE AdminCode (
+    code INT,
+    CONSTRAINT codePK PRIMARY KEY (code)
+);
