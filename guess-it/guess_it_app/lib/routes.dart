@@ -5,5 +5,6 @@ import 'screens/admin-panel-page/admin-panel-page.dart';
 
 final Map<String, WidgetBuilder> routes = <String, WidgetBuilder>{
   "/": (BuildContext context) => LandingPanel(),
-  "/ExScreen2": (BuildContext context) => AdminPanel(),
+  "/AdminCode": (BuildContext context) => AdminCode(),
+  "/AdminPanel": (BuildContext context) => AdminPanel(),
 };

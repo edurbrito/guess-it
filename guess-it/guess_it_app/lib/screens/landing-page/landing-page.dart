@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:guess_it_app/screens/admin-code-page/admin-code-page.dart';
 import 'package:guess_it_app/screens/admin-panel-page/admin-panel-page.dart';
 
 class LandingPanel extends StatelessWidget {
@@ -54,7 +55,7 @@ class LandingPanel extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => AdminPanel()),
+                    MaterialPageRoute(builder: (context) => AdminCode()),
                   );
                 },
                 child: Text(

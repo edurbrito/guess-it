@@ -36,17 +36,18 @@ class _AdminPanelState extends State<AdminPanel> {
             child: Text(
               'Schedule:',
               style: TextStyle(
-                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                fontSize: 25,
                 color: Colors.white,
                 decoration: TextDecoration.none,
               ),
             ),
           ),
-          SizedBox(height: 30),
+          SizedBox(height: 20),
           Container(
             color: Colors.white,
             width: 350.0,
-            height: 200.0,
+            height: 190.0,
             child: Scaffold(
               resizeToAvoidBottomInset: false,
               body: SingleChildScrollView(
@@ -72,6 +73,7 @@ class _AdminPanelState extends State<AdminPanel> {
                           controller: _duration,
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
+                            border: InputBorder.none,
                             labelText: "Duration (in minutes)",
                           ),
                         )),
@@ -82,29 +84,31 @@ class _AdminPanelState extends State<AdminPanel> {
           ),
           SizedBox(height: 50),
           Container(
-            alignment: Alignment(-0.8, 0),
+            alignment: Alignment(-0.75, 0),
             child: Text(
               'List of Words:',
               style: TextStyle(
-                fontSize: 20,
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
                 color: Colors.white,
                 decoration: TextDecoration.none,
               ),
             ),
           ),
-          SizedBox(height: 30),
+          SizedBox(height: 20),
           Container(
               color: Colors.white,
-              height: 300.0,
+              height: 250.0,
               width: 350.0,
               child: Scaffold(
                 resizeToAvoidBottomInset: false,
-                body: new Column(
+                body: Column(
                   children: <Widget>[
-                    new TextField(
+                    TextField(
                       controller: eCtrl,
+                      textAlign: TextAlign.center,
                       decoration: InputDecoration(
-                        labelText: "Add a word",
+                        hintText: "Add a word",
                       ),
                       onSubmitted: (text) {
                         litems.add(text);
@@ -138,7 +142,7 @@ class _AdminPanelState extends State<AdminPanel> {
                 )
               )
           ),
-          SizedBox(height: 50),
+          SizedBox(height: 30),
           RaisedButton(
             color: Colors.white,
             textColor: Colors.black54,
