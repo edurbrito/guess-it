@@ -36,6 +36,8 @@ Thank you!
 
 * [Pedro Ponte](https://github.com/pedrovponte)
 
+* [Daniel Gonçalves](https://github.com/Esdeath-GK)
+
 ---
 
 ## Product Vision
@@ -124,6 +126,22 @@ As the conference speaker, I would like to have an admin panel in order to creat
 | ![](images/UserStories/panel1.png) | ![](images/UserStories/panel3.png) | ![](images/UserStories/panel4.png) |
 | --- | --- | --- |
 
+**Acceptance Tests:**
+```gherkin
+
+  Scenario: Entering as an admin
+    Given I am in the Landing page
+    When I tap the “Enter as Admin” button
+    Then I am in the Admin Code page
+
+  Scenario: Inserting the admin code
+    Given I am in the Admin Code page
+    And I insert the correct admin code
+    When I tap the “Log In” button
+    Then I am in the Admin Panel page
+
+```
+
 **Value:** Must have
 
 **Effort:** L
@@ -135,6 +153,34 @@ As the conference speaker, I would like to define the starting time and the dura
 
 ![](images/UserStories/panel4.png)
 
+**Acceptance Tests:**
+```gherkin
+
+  Background:
+    Given A Speaker S
+    And S is in the Admin Panel Page
+    
+  Scenario: Choosing the date for the session
+    Given I logged in as Speaker S
+    When I tap the “Date dropdown”
+    And I choose a Date X for the game session
+    And I tap the “Ok” button
+    Then A new Date X is assigned to the game session
+
+  Scenario: Choosing the time for the session
+    Given I logged in as Speaker S
+    When I tap the “Time dropdown” button
+    And I choose a Time Y for the game session
+    Then A new Time Y is assigned to the game session
+
+  Scenario: Choosing the duration for the session
+    Given I logged in as Speaker S	
+    When I tap the “Duration” textbox
+    And I insert a Duration Z for the game session
+    Then A new Duration Z is assigned to the game session
+
+```
+
 **Value:** Must Have
 
 **Effort:** M
@@ -145,6 +191,22 @@ As the conference speaker, I would like to define the starting time and the dura
 As the conference speaker, I would like to suggest a list of concepts related to my session, so that it can be used by the app to include them in the game.
 
 ![](images/UserStories/panel4.png)
+
+**Acceptance Tests:**
+```gherkin
+
+  Background:
+    Given A Speaker S
+    And S is in the Admin Panel Page
+
+  Scenario: Choosing the list of concepts for the session
+    Given I logged in as Speaker S
+    When I tap the “Add a word” button
+    And I write a word W
+    And I press “Enter”
+    Then A new Word W is added to the list of words
+
+```
 
 **Value:** Must Have
 
@@ -281,11 +343,8 @@ The Admin creates the game, filling the forms and setting the options, and the P
 ---
 
 ## Implementation
-Regular product increments are a good practice of product management. 
 
-While not necessary, sometimes it might be useful to explain a few aspects of the code that have the greatest potential to confuse software engineers about how it works. Since the code should speak by itself, try to keep this section as short and simple as possible.
-
-Use cross-links to the code repository and only embed real fragments of code when strictly needed, since they tend to become outdated very soon.
+Changelogs for the different releases of our project can be found [here](https://github.com/FEUP-ESOF-2020-21/open-cx-t4g3-esofagos/releases).
 
 ---
 ## Test
@@ -310,14 +369,4 @@ For the purpose of ESOF, we will use a very simple approach, just to manage feat
 
 ## Project management
 
-Software project management is an art and science of planning and leading software projects, in which software projects are planned, implemented, monitored and controlled.
-
-In the context of ESOF, we expect that each team adopts a project management tool capable of registering tasks, assign tasks to people, add estimations to tasks, monitor tasks progress, and therefore being able to track their projects.
-
-Example of tools to do this are:
-  * [Trello.com](https://trello.com)
-  * [Github Projects](https://github.com/features/project-management/com)
-  * [Pivotal Tracker](https://www.pivotaltracker.com)
-  * [Jira](https://www.atlassian.com/software/jira)
-
-We recommend to use the simplest tool that can possibly work for the team.
+In order to organize our project, we used the project management tool [Github Projects](https://github.com/FEUP-ESOF-2020-21/open-cx-t4g3-esofagos/projects/2).
