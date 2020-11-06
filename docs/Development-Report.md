@@ -343,11 +343,8 @@ The Admin creates the game, filling the forms and setting the options, and the P
 ---
 
 ## Implementation
-Regular product increments are a good practice of product management. 
 
-While not necessary, sometimes it might be useful to explain a few aspects of the code that have the greatest potential to confuse software engineers about how it works. Since the code should speak by itself, try to keep this section as short and simple as possible.
-
-Use cross-links to the code repository and only embed real fragments of code when strictly needed, since they tend to become outdated very soon.
+Changelogs for the different releases of our project can be found [here](https://github.com/FEUP-ESOF-2020-21/open-cx-t4g3-esofagos/releases).
 
 ---
 ## Test
@@ -372,14 +369,4 @@ For the purpose of ESOF, we will use a very simple approach, just to manage feat
 
 ## Project management
 
-Software project management is an art and science of planning and leading software projects, in which software projects are planned, implemented, monitored and controlled.
-
-In the context of ESOF, we expect that each team adopts a project management tool capable of registering tasks, assign tasks to people, add estimations to tasks, monitor tasks progress, and therefore being able to track their projects.
-
-Example of tools to do this are:
-  * [Trello.com](https://trello.com)
-  * [Github Projects](https://github.com/features/project-management/com)
-  * [Pivotal Tracker](https://www.pivotaltracker.com)
-  * [Jira](https://www.atlassian.com/software/jira)
-
-We recommend to use the simplest tool that can possibly work for the team.
+In order to organize our project, we used the project management tool [Github Projects](https://github.com/FEUP-ESOF-2020-21/open-cx-t4g3-esofagos/projects/2).
