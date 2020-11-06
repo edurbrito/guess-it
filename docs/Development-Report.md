@@ -153,6 +153,34 @@ As the conference speaker, I would like to define the starting time and the dura
 
 ![](images/UserStories/panel4.png)
 
+**Acceptance Tests:**
+```gherkin
+
+  Background:
+    Given A Speaker S
+    And S is in the Admin Panel Page
+    
+  Scenario: Choosing the date for the session
+    Given I logged in as Speaker S
+    When I tap the “Date dropdown”
+    And I choose a Date X for the game session
+    And I tap the “Ok” button
+    Then A new Date X is assigned to the game session
+
+  Scenario: Choosing the time for the session
+    Given I logged in as Speaker S
+    When I tap the “Time dropdown” button
+    And I choose a Time Y for the game session
+    Then A new Time Y is assigned to the game session
+
+  Scenario: Choosing the duration for the session
+    Given I logged in as Speaker S	
+    When I tap the “Duration” textbox
+    And I insert a Duration Z for the game session
+    Then A new Duration Z is assigned to the game session
+
+```
+
 **Value:** Must Have
 
 **Effort:** M
