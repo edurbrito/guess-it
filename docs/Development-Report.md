@@ -126,6 +126,22 @@ As the conference speaker, I would like to have an admin panel in order to creat
 | ![](images/UserStories/panel1.png) | ![](images/UserStories/panel3.png) | ![](images/UserStories/panel4.png) |
 | --- | --- | --- |
 
+**Acceptance Tests:**
+```gherkin
+
+  Scenario: Entering as an admin
+    Given I am in the Landing page
+    When I tap the “Enter as Admin” button
+    Then I am in the Admin Code page
+
+  Scenario: Inserting the admin code
+    Given I am in the Admin Code page
+    And I insert the correct admin code
+    When I tap the “Log In” button
+    Then I am in the Admin Panel page
+
+```
+
 **Value:** Must have
 
 **Effort:** L
@@ -147,6 +163,22 @@ As the conference speaker, I would like to define the starting time and the dura
 As the conference speaker, I would like to suggest a list of concepts related to my session, so that it can be used by the app to include them in the game.
 
 ![](images/UserStories/panel4.png)
+
+**Acceptance Tests:**
+```gherkin
+
+  Background:
+    Given A Speaker S
+    And S is in the Admin Panel Page
+
+  Scenario: Choosing the list of concepts for the session
+    Given I logged in as Speaker S
+    When I tap the “Add a word” button
+    And I write a word W
+    And I press “Enter”
+    Then A new Word W is added to the list of words
+
+```
 
 **Value:** Must Have
 
