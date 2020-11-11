@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:guess_it_app/screens/admin-code-page/admin-code-page.dart';
-import 'package:guess_it_app/screens/admin-panel-page/admin-panel-page.dart';
+import 'package:guess_it_app/screens/game-page/game-page.dart';
 
 class LandingPanel extends StatelessWidget {
   @override
@@ -36,7 +36,12 @@ class LandingPanel extends StatelessWidget {
                   SizedBox(height: 40),
                   Container(
                     child: RaisedButton(
-                      onPressed: () => {},
+                      onPressed: () => {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => GamePage()),
+                        ),
+                      },
                       color: Colors.white,
                       textColor: Colors.black54,
                       shape: RoundedRectangleBorder(
