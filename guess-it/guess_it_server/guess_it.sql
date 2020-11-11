@@ -11,7 +11,7 @@ CREATE TABLE Schedule (
     duration INTEGER NOT NULL DEFAULT 10,
 
     CONSTRAINT schedulePK PRIMARY KEY (id),
-    CONSTRAINT scheduleFormat CHECK (dateHour IS strftime('%Y-%m-%d %H:%M:%S', dateHour))
+    CONSTRAINT scheduleFormat CHECK (dateHour IS strftime('%Y-%m-%d %H:%M', dateHour))
 );
 
 CREATE TABLE GuessItSession (
@@ -38,4 +38,4 @@ CREATE TABLE Definitions(
 
     CONSTRAINT definitionFK FOREIGN KEY(gameRound) REFERENCES GameRound ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT uniqueDefinition UNIQUE(definition, gameRound)
-)
+);
