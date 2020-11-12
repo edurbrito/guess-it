@@ -13,7 +13,6 @@ class AdminCode extends StatefulWidget {
 
 }
 
-
 class _AdminCodeState extends State<AdminCode> {
   TextEditingController _codeController = TextEditingController();
   String _codeText;
@@ -112,14 +111,4 @@ class _AdminCodeState extends State<AdminCode> {
   }
 }
 
-// class OverallMenu extends StatelessWidget{
-//   @override
-//   Widget build(BuildContext context) {
-//     return
-//   }
-// }
-
-int _checkpass() {
-
-}
 
