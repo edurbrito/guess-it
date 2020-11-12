@@ -70,9 +70,7 @@ class _AdminCodeState extends State<AdminCode> {
             setState(() {
               _codeText = _codeController.text;
             });
-            log('code: $_codeText');
             final response = await http.read('http://10.0.2.2:8081/admin-code/'+_codeText);
-            log('response: $response');
             if(response.toString() == "success") {
               Navigator.push(
                 context,

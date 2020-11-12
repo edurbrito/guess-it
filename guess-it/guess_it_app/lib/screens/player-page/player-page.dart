@@ -69,12 +69,12 @@ class _PlayerConfigState extends State<PlayerConfig> {
                 _codeText = _codeController.text;
               });
               // log('code: $_codeText');
-              // final response = await http.read('http://10.0.2.2:8081/admin-code/'+_codeText);
+              // final response = await http.read('http://10.0.2.2:8081/new-player/'+_codeText);
               // log('response: $response');
               // if(response.toString() == "success") {
               //   Navigator.push(
               //     context,
-              //     MaterialPageRoute(builder: (context) => AdminPanel()),
+              //     MaterialPageRoute(builder: (context) => GamePage()),
               //   );
               },
               // else {
@@ -82,7 +82,7 @@ class _PlayerConfigState extends State<PlayerConfig> {
               //     context: context,
               //     builder: (BuildContext context) {
               //       return AlertDialog(
-              //         title: Text("Wrong password"),
+              //         title: Text("Username already used"),
               //         actions: <Widget>[
               //           FlatButton(
               //             child: Text('Ok'),
