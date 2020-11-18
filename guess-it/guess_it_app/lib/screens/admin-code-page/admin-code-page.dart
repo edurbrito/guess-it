@@ -38,7 +38,7 @@ class _AdminCodeState extends State<AdminCode> {
               ),
             ),
             Container(
-              margin: const EdgeInsets.all(15.0),
+              margin: const EdgeInsets.symmetric(horizontal: 8.0),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.all(Radius.circular(18.0)),
