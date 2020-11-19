@@ -1,7 +1,11 @@
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:guess_it_app/screens/landing-page/landing-page.dart';
+import 'package:http/http.dart' as http;
 
 class AdminPanel extends StatefulWidget {
   @override
@@ -11,7 +15,7 @@ class AdminPanel extends StatefulWidget {
 class _AdminPanelState extends State<AdminPanel> {
   DateTime pickedDate;
   TimeOfDay pickedTime;
-  var _duration;
+  TextEditingController _durationController = TextEditingController();
   List<String> litems = [];
   final TextEditingController eCtrl = new TextEditingController();
 
@@ -68,7 +72,7 @@ class _AdminPanelState extends State<AdminPanel> {
                     Container(
                         padding: EdgeInsets.fromLTRB(18.0, 0.0, 10.0, 30.0),
                         child: TextField(
-                          controller: _duration,
+                          controller: _durationController,
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                             border: InputBorder.none,
@@ -109,7 +113,8 @@ class _AdminPanelState extends State<AdminPanel> {
                         hintText: "Add a word",
                       ),
                       onSubmitted: (text) {
-                        litems.add(text);
+                        String word = '"' + text + '"';
+                        litems.add(word);
                         eCtrl.clear();
                         setState(() {});
                       },
@@ -149,11 +154,39 @@ class _AdminPanelState extends State<AdminPanel> {
                 borderRadius: BorderRadius.circular(10.0)),
             elevation: 5,
             colorBrightness: Brightness.dark,
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => LandingPanel()),
-              );
+            onPressed: () async {
+              String extension = '{"dateHour": "' + pickedDate.year.toString() +
+                  '-' + pickedDate.month.toString() + '-' + pickedDate.day.toString() + ' ' + pickedTime.hour.toString() + ':' + pickedTime.minute.toString() +
+                  '", "duration": ' + _durationController.text + ', "words": ' + litems.toString() +'}';
+              log('extension: $extension');
+              final response = await http.read('http://10.0.2.2:8081/new-game-session/'+ extension);
+              log('response: $response');
+              if(response.toString() == "success") {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LandingPanel()),
+                );
+              }
+              else {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text("Wrong parameters"),
+                      actions: <Widget>[
+                        FlatButton(
+                          child: Text('Ok'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+                // _codeController.clear();
+              }
+
             },
             child: Text(
               "SAVE",

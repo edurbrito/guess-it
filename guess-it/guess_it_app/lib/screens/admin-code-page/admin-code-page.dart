@@ -13,7 +13,6 @@ class AdminCode extends StatefulWidget {
 
 }
 
-
 class _AdminCodeState extends State<AdminCode> {
   TextEditingController _codeController = TextEditingController();
   String _codeText;
@@ -39,7 +38,7 @@ class _AdminCodeState extends State<AdminCode> {
               ),
             ),
             Container(
-              margin: const EdgeInsets.all(15.0),
+              margin: const EdgeInsets.symmetric(horizontal: 8.0),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.all(Radius.circular(18.0)),
@@ -71,9 +70,7 @@ class _AdminCodeState extends State<AdminCode> {
             setState(() {
               _codeText = _codeController.text;
             });
-            log('code: $_codeText');
             final response = await http.read('http://10.0.2.2:8081/admin-code/'+_codeText);
-            log('response: $response');
             if(response.toString() == "success") {
               Navigator.push(
                 context,
@@ -112,14 +109,4 @@ class _AdminCodeState extends State<AdminCode> {
   }
 }
 
-// class OverallMenu extends StatelessWidget{
-//   @override
-//   Widget build(BuildContext context) {
-//     return
-//   }
-// }
-
-int _checkpass() {
-
-}
 
