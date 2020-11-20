@@ -1,7 +1,15 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:guess_it_app/screens/player-page/player-page.dart';
+import 'package:http/http.dart' as http;
 
 class GamePage extends StatefulWidget {
+  final Data data;
+
+  GamePage({Key key, @required this.data}) : super(key: key);
+
   @override
   _GamePageState createState() => _GamePageState();
 }
@@ -12,6 +20,7 @@ class _GamePageState extends State<GamePage> {
   String secretWord =
       "#r#mp L#st"; // Secret word. Change this to change the word!
   String userName = "Player's Username"; // The player's username.
+  String introducedWord;
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +95,7 @@ class _GamePageState extends State<GamePage> {
                             style: TextStyle(fontSize: 18, color: Colors.black),
                             children: <TextSpan>[
                             TextSpan(
-                                text: userName + ": ",
+                                text: widget.data.playerUsername + ": ",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.blue)),
@@ -118,9 +127,20 @@ class _GamePageState extends State<GamePage> {
                     borderRadius: BorderRadius.circular(20.0),
                   ),
                 ),
-                onSubmitted: (text) {
-                  if (text.isNotEmpty) litems.add(text);
-                  eCtrl.clear();
+                onSubmitted: (text) async {
+                  setState(() {
+                    introducedWord = eCtrl.text;
+                  });
+                  String add = '{"nickname": "' + widget.data.playerUsername + '", "message": "' + introducedWord + '"}';
+                  final response = await http.read('http://10.0.2.2:8081/new-message/' + add);
+                  String addResp = '{"success": "' + introducedWord + '"}';
+                  if(response.toString() == addResp) {
+                    litems.add(text);
+                    eCtrl.clear();
+                  }
+                  else {
+                    eCtrl.clear();
+                  }
                   setState(() {});
                 },
               ),

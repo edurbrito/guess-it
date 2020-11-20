@@ -7,6 +7,14 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:developer';
 
+class Data {
+  String _playerUsername;
+
+  Data(this._playerUsername);
+
+  String get playerUsername => _playerUsername;
+}
+
 class PlayerConfig extends StatefulWidget {
   @override
   _PlayerConfigState createState() => _PlayerConfigState();
@@ -15,7 +23,7 @@ class PlayerConfig extends StatefulWidget {
 
 class _PlayerConfigState extends State<PlayerConfig> {
   TextEditingController _codeController = TextEditingController();
-  String _codeText;
+  Data data;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,15 +75,15 @@ class _PlayerConfigState extends State<PlayerConfig> {
             colorBrightness: Brightness.dark,
             onPressed: () async {
               setState(() {
-                _codeText = _codeController.text;
+                data = new Data(_codeController.text);
               });
-              log('code: $_codeText');
-              final response = await http.read('http://10.0.2.2:8081/new-player/'+_codeText);
+              log('code: ${data._playerUsername}');
+              final response = await http.read('http://10.0.2.2:8081/new-player/'+data._playerUsername);
               log('response: $response');
               if(response.toString() == "success") {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => GamePage()),
+                  MaterialPageRoute(builder: (context) => GamePage(data : data)),
                 );
               }
               else {
