@@ -19,10 +19,12 @@ class Schedule(db.Model, Base):
     __tablename__ = 'Schedule'
     __table_args__ = (
         CheckConstraint("dateHour IS strftime('%Y-%m-%d %H:%M', dateHour)"),
+        CheckConstraint("dateHourEnd IS strftime('%Y-%m-%d %H:%M', dateHourEnd)"),
     )
 
     id = Column(Integer, primary_key=True)
     dateHour = Column(String(50), nullable=False)
+    dateHourEnd = Column(String(50), nullable=False)
     duration = Column(Integer, nullable=False, server_default=text("10"))
 
 
@@ -39,7 +41,7 @@ class GameRound(db.Model, Base):
     __tablename__ = 'GameRound'
 
     id = Column(Integer, primary_key=True)
-    time = Column(Integer, nullable=False)
+    time = Column(String(50), nullable=False)
     points = Column(Integer, server_default=text("0"))
     word = Column(String(50), nullable=False)
     guessItSession = Column(ForeignKey('GuessItSession.id'), nullable=False)
@@ -48,7 +50,7 @@ class GameRound(db.Model, Base):
 
 
 class Definition(db.Model, Base):
-    __tablename__ = 'Definitions'
+    __tablename__ = 'Definition'
     __table_args__ = (
         UniqueConstraint('definition', 'gameRound'),
     )
@@ -58,3 +60,15 @@ class Definition(db.Model, Base):
     gameRound = Column(ForeignKey('GameRound.id'), nullable=False)
 
     GameRound = relationship('GameRound')
+
+class Player(db.Model, Base):
+    __tablename__ = 'Player'
+    __table_args__ = (
+        CheckConstraint("points >= 0"),
+    )
+
+    nickname = Column(String(100), primary_key=True)
+    points = Column(Integer, server_default=text("0"))
+
+    def addPoints(self):
+        self.points += 1

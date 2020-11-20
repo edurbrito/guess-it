@@ -1,9 +1,91 @@
 
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
+from difflib import SequenceMatcher
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request
+from extensions import db, AdminCode, Schedule, GuessItSession, GameRound, Definition, Player
 
+class Worker():
+
+    def __init__(self, db):  
+        self.db = db
+
+        self.messages = []          
+        for j in range(25):
+            self.messages.append("")
+        self.currentMessage = 0
+
+        self.players = []
+
+        self.words = []
+        self.currentWord = 0
+        self.lastWord = 0
+        self.currentDefinition = [""]
+        self.active = 1
+            
+    def setWords(self, words):
+        self.words = words
+
+    def addWord(self, word):
+        self.words.append(word)
+
+    def addPlayer(self, player):
+        self.players.append(player)
+
+    def getLeader(self):
+        return self.players[self.currentWord % len(self.players)]
+
+    def addMessage(self, msg):
+        self.messages[self.currentMessage % 25] = msg
+        self.currentMessage += 1
+
+    def setDefinition(self, definition):
+        self.currentDefinition.append(definition)
+
+    def getCurrentWord(self):
+        return self.words[self.currentWord].word.replace(" ", "").lower()
+
+    def getCurrentState(self, nickname):
+        try:
+            time = datetime.now().strftime("%Y-%m-%d %H:%M")
+            schedule = Schedule.query.filter(Schedule.dateHourEnd >= time).one()
+            session = GuessItSession.query.filter(GuessItSession.Schedule == schedule).one()
+            if session != None:
+                if schedule.dateHour > time or len(self.players) == 0: 
+                    self.currentWord = 0
+                    return "Next session starts at " + schedule.dateHour
+
+                self.words = GameRound.query.filter(GameRound.GuessItSession == session)
+                
+                found = False
+                for i in range(self.words.count()):
+                    if self.words[i].time > time:
+                        if i > 0 and self.words[i - 1].time <= time:
+                            self.currentWord = i
+                            if self.currentWord != self.lastWord:
+                                self.currentDefinition = [""]
+                                self.lastWord = self.currentWord
+                        found = True
+                        break
+                
+                if not found: 
+                    self.active = 0
+                    return "Session has ended"
+
+                if nickname == self.getLeader():
+                    return json.dumps({"leader": True, "word" : self.words[self.currentWord].word, "messages": self.messages})
+                else:
+                    return json.dumps({"leader": False, "definition" : self.currentDefinition[len(self.currentDefinition) - 1], "messages": self.messages})
+
+            else:
+                self.active = 0
+                return "No sessions comming"
+        except Exception as e:
+            print(e)
+            self.active = 0
+            return "No sessions comming"
+        
 
 def create_app(config_file="settings.py"):
     app = Flask(__name__)
@@ -17,22 +99,8 @@ def create_app(config_file="settings.py"):
     def pong():
         return 'pong'
 
-    from extensions import db, AdminCode, Schedule, GuessItSession, GameRound
-
     db.init_app(app)
-
-    with app.app_context():
-        try:
-            db.drop_all()
-            db.create_all()
-
-            code1 = AdminCode(code=12345)
-
-            db.session.add(code1)
-            db.session.commit()
-
-        except Exception as e:
-            print(e, "on init")
+    worker = Worker(db)
 
     @app.route('/admin-code/<code>')
     def admin_code(code):
@@ -45,34 +113,134 @@ def create_app(config_file="settings.py"):
     @app.route('/new-game-session/<session>')
     def new_game_session(session):
         try:
-            _session = json.loads(session) # {"dateHour": "2020-11-07 22:22", "duration": 10, "words": ["a", "b"]}
+            # {"dateHour": "2020-11-07 22:22", "duration": 10, "words": ["a", "b"]}
+            _session = json.loads(session)
+            dateHour = _session.get('dateHour')
+            now = datetime.now().strftime("%Y-%m-%d %H:%M")
+
+            # if dateHour <= now: 
+            #     raise Exception()
 
             duration = _session.get('duration')
-            word_time = int(duration/len(_session.get('words')))
-            schedule = Schedule(dateHour=_session.get('dateHour'), duration=duration)
+            _words = _session.get('words')
+            word_time = int(duration/len(_words))
+
+            dateHourEnd = str(datetime.strptime(
+                dateHour, "%Y-%m-%d %H:%M") + timedelta(seconds=(word_time + duration)*60 + 10 * len(_words)))
+            dateHourEnd = dateHourEnd[0:len(dateHourEnd) - 3]
+
+            unavailable = Schedule.query.all()
+            for u in unavailable:
+                if not(u.dateHour > dateHourEnd or u.dateHourEnd < dateHour):
+                    raise Exception()
+
+            if not isinstance(_words, list):
+                raise Exception()
+
+            schedule = Schedule(dateHour=dateHour,
+                                duration=duration, dateHourEnd=dateHourEnd)
             guessItSession = GuessItSession(Schedule=schedule)
 
             db.session.add(schedule)
             db.session.add(guessItSession)
 
-            for word in _session.get('words'):
-                gameRound = GameRound(time=word_time, word=word, GuessItSession=guessItSession)
+            i = 1
+
+            for word in _words:
+                time = str(datetime.strptime(
+                dateHour, "%Y-%m-%d %H:%M") + timedelta(seconds=i*word_time*60 + 10))
+                time = time[0:len(time) - 3]
+
+                gameRound = GameRound(
+                    time=time, word=word, GuessItSession=guessItSession)
+                definition = Definition(definition=None, GameRound=gameRound)
                 db.session.add(gameRound)
-            
+                db.session.add(definition)
+                i += 1
+
             db.session.commit()
             return "success"
         except Exception as e:
+            print(e)
             return "fail"
 
-    @app.route('/admin-words/<words>')
-    def admin_words(words):
+    @app.route('/new-player/<nickname>')
+    def new_player(nickname):
         try:
-            _words = json.loads(words)
-            if isinstance(_words, list):
-                return "success"
-            else:
-                return "fail"
+            player = Player(nickname=nickname)
+            worker.addPlayer(player.nickname)
+            db.session.add(player)
+            db.session.commit()
+            return 'success'
         except:
+            return 'fail'
+
+    @app.route('/new-message/<message>')
+    def new_message(message):
+        try:
+            # {"nickname": "nicknameeeee", "message": "messageeee"}
+            _message = json.loads(message)
+            nickname = _message.get('nickname')
+            msg = _message.get('message')
+            
+            player = Player.query.filter_by(nickname=nickname).first()
+            if player is None:
+                raise Exception()
+            
+            if nickname != worker.getLeader():
+                if msg == worker.words[worker.currentWord].word or worker.getCurrentWord() in msg.replace(" ", "").lower():
+                    msg = "YOU GOT IT!!"
+                    player.addPoints()
+                else:
+                    ratio = SequenceMatcher(a=worker.getCurrentWord(),b=msg.replace(" ", "").lower()).ratio()
+                    if ratio > 0.95:
+                        msg = "YOU GOT IT!!"
+                        player.addPoints()
+                    elif ratio > 0.7:
+                        msg = "YOU ARE CLOSE!!"
+
+                worker.addMessage(nickname + " : " + msg)
+                db.session.commit()
+            else:
+                ratio = SequenceMatcher(a=worker.getCurrentWord(),b=msg.replace(" ", "").lower()).ratio()
+                if msg == worker.getCurrentWord() or worker.getCurrentWord() in msg.replace(" ", "").lower() or ratio > 0.7:
+                    raise Exception()
+                
+                worker.setDefinition(msg)                     
+
+            return json.dumps({'success': msg})
+
+        except Exception as e:
+            print(e)
             return "fail"
+    
+    @app.route('/get-messages/<nickname>')
+    def get_messages(nickname):
+        return worker.getCurrentState(nickname)
+    
+    with app.app_context():
+        try:
+            db.drop_all()
+            db.create_all()
+
+            code1 = AdminCode(code=12345)
+
+            p1 = Player(nickname="eduardo")
+            p2 = Player(nickname="pedro")
+
+            worker.addPlayer(p1.nickname)
+            worker.addPlayer(p2.nickname)
+            time = str(datetime.strptime(datetime.now().strftime("%Y-%m-%d %H:%M"), "%Y-%m-%d %H:%M") + timedelta(seconds=10))
+            time = time[0:len(time) - 3]
+
+            new_game_session('{"dateHour": "' + time  + '", "duration": 2, "words": ["a", "b"]}')
+
+            db.session.add(code1)
+            db.session.add(p1)
+            db.session.add(p2)
+            db.session.commit()
+
+        except Exception as e:
+            print(e, "on init")
 
     return app
