@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:guess_it_app/screens/admin-panel-page/admin-panel-page.dart';
+import 'package:guess_it_app/screens/game-page/game-page.dart';
+import 'package:guess_it_app/screens/game-panel/game-panel.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:developer';
@@ -42,7 +44,6 @@ class _PlayerConfigState extends State<PlayerConfig> {
                 borderRadius: BorderRadius.all(Radius.circular(18.0)),
               ),
               child: TextField(
-                obscureText: true,
                 textAlign: TextAlign.center,
                 controller: _codeController,
                 decoration: InputDecoration(
@@ -68,37 +69,37 @@ class _PlayerConfigState extends State<PlayerConfig> {
               setState(() {
                 _codeText = _codeController.text;
               });
-              // log('code: $_codeText');
-              // final response = await http.read('http://10.0.2.2:8081/new-player/'+_codeText);
-              // log('response: $response');
-              // if(response.toString() == "success") {
-              //   Navigator.push(
-              //     context,
-              //     MaterialPageRoute(builder: (context) => GamePage()),
-              //   );
-              },
-              // else {
-              //   showDialog(
-              //     context: context,
-              //     builder: (BuildContext context) {
-              //       return AlertDialog(
-              //         title: Text("Username already used"),
-              //         actions: <Widget>[
-              //           FlatButton(
-              //             child: Text('Ok'),
-              //             onPressed: () {
-              //               Navigator.of(context).pop();
-              //             },
-              //           ),
-              //         ],
-              //       );
-              //     },
-              //   );
-              //   _codeController.clear();
-              // }
-            //},
+              log('code: $_codeText');
+              final response = await http.read('http://10.0.2.2:8081/new-player/'+_codeText);
+              log('response: $response');
+              if(response.toString() == "success") {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => GamePage()),
+                );
+              }
+              else {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text("Username already used"),
+                      actions: <Widget>[
+                        FlatButton(
+                          child: Text('Ok'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+                _codeController.clear();
+              }
+            },
             child: Text(
-              "LOG IN",
+              "I AM READY!",
               style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
             ),
           )
