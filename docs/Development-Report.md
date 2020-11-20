@@ -10,7 +10,7 @@ You can find here detailed about the (sub)product, hereby mentioned as module, f
   * [Product Vision](#Product-Vision)
   * [Elevator Pitch](#Elevator-Pitch)
 * Requirements
-  * [Use Case Diagram](#Use-case-diagram)
+  * [Use Case Diagram](#Use-cases-diagram)
   * [User stories](#User-stories)
   * [Domain model](#Domain-model)
 * Architecture and Design
@@ -120,7 +120,7 @@ In order to write its guesses, the player must first join the game session. In t
 
 > Actors: Guesser or Leader; Speaker
 
-* **User Story 1:**
+#### **User Story 1:**
 As the conference speaker, I would like to have an admin panel in order to create the next game session.
 
 | ![](images/UserStories/panel1.png) | ![](images/UserStories/panel3.png) | ![](images/UserStories/panel4.png) |
@@ -148,7 +148,7 @@ As the conference speaker, I would like to have an admin panel in order to creat
 
 -----
 
-* **User Story 2:**
+#### **User Story 2:**
 As the conference speaker, I would like to define the starting time and the duration of the game, so that I don’t have to worry about unforeseen delays.
 
 ![](images/UserStories/panel4.png)
@@ -187,7 +187,7 @@ As the conference speaker, I would like to define the starting time and the dura
 
 -----
 
-* **User Story 3:**
+#### **User Story 3:**
 As the conference speaker, I would like to suggest a list of concepts related to my session, so that it can be used by the app to include them in the game.
 
 ![](images/UserStories/panel4.png)
@@ -214,7 +214,7 @@ As the conference speaker, I would like to suggest a list of concepts related to
 
 -----
 
-* **User Story 4:**
+#### **User Story 4:**
 As a player, I would like to participate in the game anonymously, so I can feel more at ease and freely write my guesses without the fear of failing.
 
 ![](images/UserStories/panel2.png)
@@ -225,7 +225,7 @@ As a player, I would like to participate in the game anonymously, so I can feel 
 
 -----
 
-* **User Story 5:**
+#### **User Story 5:**
 As a player, I would like to see all the other players’ missed answers in a live chat, so that I can get some insights about my potential guesses.
 
 ![](images/UserStories/panel5.png)
@@ -236,7 +236,7 @@ As a player, I would like to see all the other players’ missed answers in a li
 
 -----
 
-* **User Story 6:**
+#### **User Story 6:**
 As a guesser, I would like to know if I'm close to the answer, by miswriting it or swapping some letters.
 
 ![](images/UserStories/panel5.png)
@@ -247,7 +247,7 @@ As a guesser, I would like to know if I'm close to the answer, by miswriting it 
 
 -----
 
-* **User Story 7:**
+#### **User Story 7:**
 As a leader, I would like the game to give some clues about the word if the players are taking too long to guess it, like writing my definitions of it or saying how many letters it has, for example.
 
 ![](images/UserStories/panel6.png)
@@ -258,7 +258,7 @@ As a leader, I would like the game to give some clues about the word if the play
 
 -----
 
-* **User Story 8:**
+#### **User Story 8:**
 As a player, I would like to see a ranking of all the players, based on the points they made.
 
 **Value:** Could Have
@@ -267,7 +267,7 @@ As a player, I would like to see a ranking of all the players, based on the poin
 
 -----
 
-* **User Story 9:**
+#### **User Story 9:**
 As the conference speaker, I would like to see the statistics of the game, so I can know which words were the most difficult to guess, in order to better explain those topics to the audience.
 
 **Value:** Could Have
@@ -276,7 +276,7 @@ As the conference speaker, I would like to see the statistics of the game, so I 
 
 -----
 
-* **User Story 10:**
+#### **User Story 10:**
 As the conference speaker, I would like to generate a final report with the word definitions given by the players, so that I can discuss them with the audience.
 
 **Value:** Could Have
