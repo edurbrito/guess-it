@@ -48,6 +48,9 @@ class GameRound(db.Model, Base):
 
     GuessItSession = relationship('GuessItSession')
 
+    def addPoints(self, points):
+        self.points = points
+
 
 class Definition(db.Model, Base):
     __tablename__ = 'Definition'
@@ -61,6 +64,10 @@ class Definition(db.Model, Base):
 
     GameRound = relationship('GameRound')
 
+    def definitions():
+        definitions = db.session.query(Definition, GameRound).filter(Definition.gameRound == GameRound.id).order_by(text("points desc")).all()
+        return [ {'word' : g.word, 'definition' : d.definition} for (d,g) in definitions]
+
 class Player(db.Model, Base):
     __tablename__ = 'Player'
     __table_args__ = (
@@ -72,3 +79,7 @@ class Player(db.Model, Base):
 
     def addPoints(self):
         self.points += 1
+
+    def leaderboard():
+        players = Player.query.order_by(text("points desc"))
+        return [ {'nickname' : p.nickname, 'points' : p.points} for p in players]
