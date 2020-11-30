@@ -24,9 +24,9 @@ class _GamePageState extends State<GamePage> {
   List<List<TextSpan>> litems = [];
 
   final TextEditingController eCtrl = new TextEditingController();
-  String secretWord = ""; // Secret word.
-  String userName; // The player's username.
-  String introducedWord;
+  String secretWord = ""; // Secret word
+  String userName = ""; // The player's username
+  String introducedWord = "";
   String definition = "";
   String leaderName = "";
   bool leader = false;
@@ -40,9 +40,12 @@ class _GamePageState extends State<GamePage> {
     super.initState();
 
     Timer.periodic(Duration(seconds: 3), (timer) async {
-      final response = await http.read('http://10.0.2.2:8081/get-messages/' + this.userName);
+      final response =
+          await http.read('http://10.0.2.2:8081/get-messages/' + this.userName);
 
-      if (response == "No sessions comming" || response == "Session has ended" || response.contains("Next session starts at")) {
+      if (response == "No sessions comming" ||
+          response == "Session has ended" ||
+          response.contains("Next session starts at")) {
         // MUDAR PARA PAGE NOVA
         print('ACABOU');
         timer.cancel();
@@ -55,15 +58,8 @@ class _GamePageState extends State<GamePage> {
 
       leaderName = decodedMessage["leaderName"];
       definition = decodedMessage["definition"];
-
-      if (decodedMessage["leader"]) {
-        leader = true;
-        secretWord = decodedMessage["word"];
-
-      }
-      else {
-        leader = false;
-      }
+      secretWord = decodedMessage["word"];
+      leader = decodedMessage["leader"];
 
       for (int i = 0; i < decodedMessage["messages"].length; i++) {
         if (decodedMessage["messages"][i] != "") {
@@ -72,9 +68,7 @@ class _GamePageState extends State<GamePage> {
             text: decodedMessage["messages"][i]["nickname"],
             style: TextStyle(fontSize: 18, color: Colors.blue),
           ));
-          listSpans.add(
-            TextSpan(text: decodedMessage["messages"][i]["msg"])
-          );
+          listSpans.add(TextSpan(text: decodedMessage["messages"][i]["msg"]));
           litems.add(listSpans);
         }
       }
@@ -116,9 +110,7 @@ class _GamePageState extends State<GamePage> {
                   ),
                 ),
                 ListTile(
-                  title: Center(
-                    child: _getTips()
-                  ),
+                  title: Center(child: _getTips()),
                 ),
                 ListTile(
                   title: Center(
@@ -128,7 +120,7 @@ class _GamePageState extends State<GamePage> {
                         fontSize: 30,
                         color: Colors.black,
                       ),
-                      children: _getHiddenString(this.leader),
+                      children: _getHiddenString(),
                     ),
                   )),
                 ),
@@ -145,18 +137,18 @@ class _GamePageState extends State<GamePage> {
                 children: <Widget>[
                   new Expanded(
                       child: new ListView.separated(
-                        padding: const EdgeInsets.all(8),
-                        itemCount: litems.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return RichText(
-                            text: TextSpan(
-                            style: TextStyle(fontSize: 18, color: Colors.black),
-                            children:
-                              litems[index],
+                    padding: const EdgeInsets.all(8),
+                    itemCount: litems.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return RichText(
+                        text: TextSpan(
+                          style: TextStyle(fontSize: 18, color: Colors.black),
+                          children: litems[index],
                         ),
                       );
                     },
-                        separatorBuilder: (BuildContext context, int index) => const Divider(),
+                    separatorBuilder: (BuildContext context, int index) =>
+                        const Divider(),
                   )),
                 ],
               ),
@@ -183,7 +175,11 @@ class _GamePageState extends State<GamePage> {
                   setState(() {
                     introducedWord = eCtrl.text;
                   });
-                  String add = '{"nickname": "' + this.userName + '", "message": "' + introducedWord + '"}';
+                  String add = '{"nickname": "' +
+                      this.userName +
+                      '", "message": "' +
+                      introducedWord +
+                      '"}';
                   await http.read('http://10.0.2.2:8081/new-message/' + add);
 
                   eCtrl.clear();
@@ -199,30 +195,24 @@ class _GamePageState extends State<GamePage> {
   }
 
   _getTips() {
-      return Text(
-          this.definition,
-          style: TextStyle(
-            fontSize: 18,
-            color: Color.fromRGBO(100, 100, 100, 1.0),
-            fontWeight: FontWeight.bold,
-          )
-      );
+    return Text(this.definition,
+        style: TextStyle(
+          fontSize: 18,
+          color: Color.fromRGBO(100, 100, 100, 1.0),
+          fontWeight: FontWeight.bold,
+        ));
   }
 
   /* The following function returns an array of TextSpans based on the format of the word inside the "secretWord" variable.
      '#' characters in the secret word are transformed into '__'. Any other case is left unchanged.
   */
-  _getHiddenString(leader) {
+  _getHiddenString() {
     List<TextSpan> temp = new List<TextSpan>();
 
-    if (leader) {
-      for (int i = 0; i < secretWord.length; i++) {
-          temp.add(new TextSpan(text: secretWord[i]));
-      }
+    for (int i = 0; i < secretWord.length; i++) {
+      temp.add(new TextSpan(text: secretWord[i]));
     }
-    else {
 
-    }
     return temp;
   }
 
