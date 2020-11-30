@@ -90,9 +90,9 @@ class Worker():
                     return "Session has ended"
 
                 if nickname == self.getLeader():
-                    return json.dumps({"leader": True, "word" : self.words[self.currentWord].word, "messages": self.messages})
+                    return json.dumps({"leader": True, "leaderName": self.getLeader(), "definition" : self.currentDefinition[len(self.currentDefinition) - 1], "word" : self.words[self.currentWord].word, "messages": self.messages})
                 else:
-                    return json.dumps({"leader": False, "definition" : self.currentDefinition[len(self.currentDefinition) - 1], "messages": self.messages})
+                    return json.dumps({"leader": False, "leaderName": self.getLeader(), "definition" : self.currentDefinition[len(self.currentDefinition) - 1], "messages": self.messages})
 
             else:
                 self.active = 0
@@ -220,7 +220,7 @@ def create_app(config_file="settings.py"):
                     elif ratio > 0.7:
                         msg = "YOU ARE CLOSE!!"
 
-                worker.addMessage(nickname + " : " + msg)
+                worker.addMessage({"nickname" : nickname + ': ', "msg" : msg})
                 db.session.commit()
             else:
                 ratio = SequenceMatcher(a=worker.getCurrentWord(),b=msg.replace(" ", "").lower()).ratio()
