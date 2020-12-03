@@ -51,17 +51,6 @@ class Worker():
     def getCurrentWord(self):
         return self.words[self.currentWord].word.replace(" ", "").lower()
 
-    def getShadowWord(self, word):
-        nrands = len(word) // 3
-        temp_word = ['_' for i in word]
-        for i in range(0, nrands):
-            while(True):
-                nrand = randint(0, len(word) - 1)
-                if temp_word[nrand] == '_':
-                    temp_word[nrand] = word[nrand]
-                    break
-        return temp_word
-
     def getCurrentState(self, nickname):
         try:
             time = datetime.now().strftime("%Y-%m-%d %H:%M")
@@ -104,7 +93,7 @@ class Worker():
                 if nickname == self.getLeader():
                     return json.dumps({"leader": True, "leaderName": self.getLeader(), "definition" : self.currentDefinition[len(self.currentDefinition) - 1], "word" : self.words[self.currentWord].word, "messages": self.messages})
                 else:
-                    return json.dumps({"leader": False, "leaderName": self.getLeader(), "definition" : self.currentDefinition[len(self.currentDefinition) - 1], "word" : self.getShadowWord(self.words[self.currentWord].word), "messages": self.messages})
+                    return json.dumps({"leader": False, "leaderName": self.getLeader(), "definition" : self.currentDefinition[len(self.currentDefinition) - 1], "word" : self.words[self.currentWord].shadow_word, "messages": self.messages})
 
             else:
                 self.active = 0
@@ -118,6 +107,17 @@ class Worker():
 def create_app(config_file="settings.py"):
     app = Flask(__name__)
     app.config.from_pyfile(config_file)
+
+    def getShadowWord(word):
+        nrands = len(word) // 3
+        temp_word = ['_' for i in word]
+        for i in range(0, nrands):
+            while(True):
+                nrand = randint(0, len(word) - 1)
+                if temp_word[nrand] == '_':
+                    temp_word[nrand] = word[nrand]
+                    break
+        return temp_word
 
     @app.route('/')
     def home_page():
@@ -180,7 +180,7 @@ def create_app(config_file="settings.py"):
                 time = time[0:len(time) - 3]
 
                 gameRound = GameRound(
-                    time=time, word=word, GuessItSession=guessItSession)
+                    time=time, word=word, shadow_word=getShadowWord(word), GuessItSession=guessItSession)
                 definition = Definition(definition=None, GameRound=gameRound)
                 db.session.add(gameRound)
                 db.session.add(definition)

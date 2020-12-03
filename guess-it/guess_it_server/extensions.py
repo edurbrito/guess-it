@@ -44,6 +44,7 @@ class GameRound(db.Model, Base):
     time = Column(String(50), nullable=False)
     points = Column(Integer, server_default=text("0"))
     word = Column(String(50), nullable=False)
+    shadow_word = Column(String(50), nullable=False)
     guessItSession = Column(ForeignKey('GuessItSession.id'), nullable=False)
 
     GuessItSession = relationship('GuessItSession')
