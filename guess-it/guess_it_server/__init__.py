@@ -1,5 +1,6 @@
 
 import json
+from random import randint
 from datetime import datetime, timedelta
 from difflib import SequenceMatcher
 
@@ -22,6 +23,7 @@ class Worker():
         self.currentWord = 0
         self.lastWord = 0
         self.currentDefinition = [""]
+        self.currentPoints = [0]
         self.active = 1
             
     def setWords(self, words):
@@ -32,6 +34,9 @@ class Worker():
 
     def addPlayer(self, player):
         self.players.append(player)
+
+    def addPoints(self):
+        self.currentPoints.append(1)
 
     def getLeader(self):
         return self.players[self.currentWord % len(self.players)]
@@ -64,19 +69,31 @@ class Worker():
                         if i > 0 and self.words[i - 1].time <= time:
                             self.currentWord = i
                             if self.currentWord != self.lastWord:
+                                self.words[self.lastWord].addPoints(sum(self.currentPoints))
+                                definition = Definition.query.filter(Definition.GameRound == self.words[self.lastWord]).one()
+                                definition.definition = ", ".join(self.currentDefinition[1:])
+                                db.session.commit()
                                 self.currentDefinition = [""]
+                                self.currentPoints = [0]
                                 self.lastWord = self.currentWord
                         found = True
                         break
                 
                 if not found: 
+                    if self.active:
+                        self.words[self.currentWord].addPoints(sum(self.currentPoints))
+                        definition = Definition.query.filter(Definition.GameRound == self.words[self.currentWord]).one()
+                        definition.definition = ", ".join(self.currentDefinition[1:])
+                        db.session.commit()
+                        self.currentDefinition = [""]
+                        self.currentPoints = [0]
                     self.active = 0
                     return "Session has ended"
 
                 if nickname == self.getLeader():
-                    return json.dumps({"leader": True, "word" : self.words[self.currentWord].word, "messages": self.messages})
+                    return json.dumps({"leader": True, "leaderName": self.getLeader(), "definition" : self.currentDefinition[len(self.currentDefinition) - 1], "word" : self.words[self.currentWord].word, "messages": self.messages})
                 else:
-                    return json.dumps({"leader": False, "definition" : self.currentDefinition[len(self.currentDefinition) - 1], "messages": self.messages})
+                    return json.dumps({"leader": False, "leaderName": self.getLeader(), "definition" : self.currentDefinition[len(self.currentDefinition) - 1], "word" : self.words[self.currentWord].shadow_word, "messages": self.messages})
 
             else:
                 self.active = 0
@@ -90,6 +107,17 @@ class Worker():
 def create_app(config_file="settings.py"):
     app = Flask(__name__)
     app.config.from_pyfile(config_file)
+
+    def getShadowWord(word):
+        nrands = len(word) // 3
+        temp_word = ['_' for i in word]
+        for i in range(0, nrands):
+            while(True):
+                nrand = randint(0, len(word) - 1)
+                if temp_word[nrand] == '_':
+                    temp_word[nrand] = word[nrand]
+                    break
+        return "".join(temp_word)
 
     @app.route('/')
     def home_page():
@@ -152,7 +180,7 @@ def create_app(config_file="settings.py"):
                 time = time[0:len(time) - 3]
 
                 gameRound = GameRound(
-                    time=time, word=word, GuessItSession=guessItSession)
+                    time=time, word=word, shadow_word=getShadowWord(word), GuessItSession=guessItSession)
                 definition = Definition(definition=None, GameRound=gameRound)
                 db.session.add(gameRound)
                 db.session.add(definition)
@@ -178,6 +206,9 @@ def create_app(config_file="settings.py"):
     @app.route('/new-message/<message>')
     def new_message(message):
         try:
+            if not worker.active:
+                raise Exception()
+
             # {"nickname": "nicknameeeee", "message": "messageeee"}
             _message = json.loads(message)
             nickname = _message.get('nickname')
@@ -191,15 +222,17 @@ def create_app(config_file="settings.py"):
                 if msg == worker.words[worker.currentWord].word or worker.getCurrentWord() in msg.replace(" ", "").lower():
                     msg = "YOU GOT IT!!"
                     player.addPoints()
+                    worker.addPoints()
                 else:
                     ratio = SequenceMatcher(a=worker.getCurrentWord(),b=msg.replace(" ", "").lower()).ratio()
                     if ratio > 0.95:
                         msg = "YOU GOT IT!!"
                         player.addPoints()
+                        worker.addPoints()
                     elif ratio > 0.7:
                         msg = "YOU ARE CLOSE!!"
 
-                worker.addMessage(nickname + " : " + msg)
+                worker.addMessage({"nickname" : nickname + ': ', "msg" : msg})
                 db.session.commit()
             else:
                 ratio = SequenceMatcher(a=worker.getCurrentWord(),b=msg.replace(" ", "").lower()).ratio()
@@ -218,6 +251,15 @@ def create_app(config_file="settings.py"):
     def get_messages(nickname):
         return worker.getCurrentState(nickname)
     
+    @app.route('/get-leaderboard')
+    def get_leaderboard():
+        return json.dumps(Player.leaderboard())
+
+    @app.route('/get-definitions')
+    def get_definitions():
+        return json.dumps(Definition.definitions())
+        
+
     with app.app_context():
         try:
             db.drop_all()
