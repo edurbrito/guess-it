@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:guess_it_app/screens/admin-code-page/admin-code-page.dart';
-import 'package:guess_it_app/screens/game-page/game-page.dart';
 import 'package:guess_it_app/screens/player-page/player-page.dart';
 
 class LandingPanel extends StatelessWidget {
