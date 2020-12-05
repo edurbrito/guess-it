@@ -117,7 +117,7 @@ def create_app(config_file="settings.py"):
                 if temp_word[nrand] == '_':
                     temp_word[nrand] = word[nrand]
                     break
-        return temp_word
+        return "".join(temp_word)
 
     @app.route('/')
     def home_page():
