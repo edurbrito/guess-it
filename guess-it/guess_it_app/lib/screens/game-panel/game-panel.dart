@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import '../../utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -12,115 +13,145 @@ class GamePanel extends StatefulWidget {
 }
 
 class _GamePanelState extends State<GamePanel> {
-  List<String> litems = [];
+  List<String> litems = [];                 // User input
   final TextEditingController eCtrl = new TextEditingController();
+  String realWord = "Trump Lost";           // The real word that will be used to check if the answer's close.
   String secretWord = "#r#mp L#st";         // Secret word. Change this to change the word!
   String userName = "Player's Username";    // The player's username.
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Color.fromRGBO(134, 232, 214, 1.0),
-      child: Column(
-        children: [
-          SizedBox(height: 75),
-          Container(
-            color: Colors.white,
-            width: 350.0,
-            height: 170.0,
-            child: Scaffold(
-              resizeToAvoidBottomInset: false,
-              body: SingleChildScrollView(
+    return Scaffold(
+        resizeToAvoidBottomInset: true,
+        backgroundColor: Color.fromRGBO(134, 232, 214, 1.0),
+        body: Container(
+          padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+          child: SingleChildScrollView(
+            child: Center(
                 child: Column(
-                  children: <Widget>[
-                    ListTile(
-                      title: Center(
-                        child: Text(
-                          userName,
-                          style: TextStyle(
-                            color: Colors.blue,
-                            fontWeight: FontWeight.bold,
-                            fontStyle: FontStyle.italic,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 75),
+                    Container(
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(
+                            color: Colors.black87,
+                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(20))
+                      ),
+                      width: 360.0,
+                      height: 190.0,
+                      child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              ListTile(
+                                title: Center(
+                                  child: Text(
+                                    userName,
+                                    style: TextStyle(
+                                      color: Colors.blue,
+                                      fontWeight: FontWeight.bold,
+                                      fontStyle: FontStyle.italic,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              ListTile(
+                                title: Center(
+                                  child: Column(
+                                    children: _getTips(),
+                                  ),
+                                ),
+                              ),
+                              ListTile(
+                                title: Center(
+                                  child: RichText(
+                                    text: TextSpan(
+                                      style: TextStyle(fontSize: 30, color: Colors.black,),
+                                      children: _getHiddenString(),
+                                    ),
+                                  )
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
+                    SizedBox(height: 35),
+                    Center(child:
+                      Text("GUESS THE WORD",
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)
+                      ),
                     ),
-                    ListTile(
-                      title: Center(
+                    SizedBox(height: 4),
+                    Container(
                         child: Column(
-                          children: _getTips(),
+                              children: <Widget>[
+                                Container(
+                                  height: 250.0,
+                                  width: 360.0,
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      border: Border.all(
+                                        color: Colors.black87,
+                                      ),
+                                      borderRadius: BorderRadius.all(Radius.circular(20))
+                                  ),
+                                  child: new ListView.separated(
+                                        padding: const EdgeInsets.all(12),
+                                        itemCount: litems.length,
+                                        itemBuilder: (BuildContext context, int index) {
+                                          return RichText(
+                                            text: TextSpan(
+                                              style: TextStyle(fontSize: 18, color: Colors.black),
+                                              children: _setMessageString(index),
+                                            ),
+                                          );
+                                        },
+                                        separatorBuilder: (BuildContext context, int index) => const Divider(),
+                                      )
+                                    ),
+                                Divider(height: 10, thickness: 5, color: Color.fromRGBO(134, 232, 214, 1.0)),
+                                Container(
+                                  width: 360.0,
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      border: Border.all(
+                                        color: Colors.black87,
+                                      ),
+                                      borderRadius: BorderRadius.all(Radius.circular(20))
+                                  ),
+                                  padding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
+                                  child: TextField(
+                                    controller: eCtrl,
+                                    textAlign: TextAlign.center,
+                                    decoration: InputDecoration(
+                                      hintText: "Type your guess ...",
+                                    ),
+                                    onSubmitted: (text) {
+                                      if(text.isNotEmpty)
+                                        _checkAndAdd(text);
+                                      eCtrl.clear();
+                                      setState(() {});
+                                    },
+                                  ),
+                                ),
+                              ],
+                            )
                         ),
-                      ),
-                    ),
-                    ListTile(
-                      title: Center(
-                        child: RichText(
-                          text: TextSpan(
-                            style: TextStyle(fontSize: 30, color: Colors.black,),
-                            children: _getHiddenString(),
-                          ),
-                        )
-                      ),
-                    ),
+                    SizedBox(height: 30),
                   ],
                 ),
-              ),
             ),
-          ),
-          SizedBox(height: 60),
-          Container(
-              color: Colors.white,
-              height: 250.0,
-              width: 350.0,
-              child: Scaffold(
-                  resizeToAvoidBottomInset: false,
-                  body: Column(
-                    children: <Widget>[
-                      new Expanded(
-                          child: new ListView.separated(
-                            padding: const EdgeInsets.all(8),
-                            itemCount: litems.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              final item = litems[index];
-                              return RichText(
-                                text: TextSpan(
-                                  style: TextStyle(fontSize: 18, color: Colors.black),
-                                  children: <TextSpan>[
-                                    TextSpan(text: userName + ": ", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue)),
-                                    TextSpan(text: litems[index]),
-                                  ],
-                                ),
-                              );
-                            },
-                            separatorBuilder: (BuildContext context, int index) => const Divider(),
-                          )
-                      ),
-                      Divider(height: 10, thickness: 5, color: Color.fromRGBO(134, 232, 214, 1.0)),
-                      TextField(
-                        controller: eCtrl,
-                        textAlign: TextAlign.center,
-                        decoration: InputDecoration(
-                          hintText: "Type your guess ...",
-                        ),
-                        onSubmitted: (text) {
-                          if(text.isNotEmpty)
-                            litems.add(text);
-                          eCtrl.clear();
-                          setState(() {});
-                        },
-                      ),
-                    ],
-                  )
-              )
-          ),
-          SizedBox(height: 30),
-        ],
+        ),
       ),
     );
   }
 
   _getTips(){
-      List<String> someList = ["Define the word here!", "You can say more stuff too!"];
+      List<String> someList = ["Define the word here!", "You can say more stuff too!", "Just ... one more! Promiiise!"];
       return new List<Widget>.generate(someList.length, (int index) {
         return Text(
             someList[index].toString(),
@@ -149,10 +180,45 @@ class _GamePanelState extends State<GamePanel> {
     return temp;
   }
 
+  _checkAndAdd(String text){
+    litems.add(text);
+    Utils utils = new Utils();
+    int result = utils.getLevenshteinDistance(text, realWord);
+
+    if(result == 0)
+      litems.add("YOU GOT IT!!");
+    else if(result > 0 && result <= 2)
+      litems.add("YOU ARE CLOSE!!");
+    else
+      litems.add("Wrong ...");
+  }
+
+  /* Formats the string based on its contents. */
   _setMessageString(int index){
+      bool isUserMessage = index % 2 == 0;
       String stringInQuestion = litems[index];
+      String authorMessage = (isUserMessage) ? userName + ": " : "Admin: ";
       List<TextSpan> temp = new List<TextSpan>();
 
+      temp.add(new TextSpan(text: authorMessage, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue)));
+      if(!isUserMessage){
+          switch(stringInQuestion){
+            case "YOU GOT IT!!":
+              temp.add(new TextSpan(text: litems[index], style: TextStyle(fontWeight: FontWeight.bold, color: Colors.green)));
+              break;
+            case "YOU ARE CLOSE!!":
+              temp.add(new TextSpan(text: litems[index], style: TextStyle(fontWeight: FontWeight.bold, color: Colors.orange)));
+              break;
+            case "Wrong ...":
+              temp.add(new TextSpan(text: litems[index], style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red)));
+              break;
+          }
+      }
+      else{
+        temp.add(TextSpan(text: litems[index]));
+      }
+
+      return temp;
   }
 
 }
