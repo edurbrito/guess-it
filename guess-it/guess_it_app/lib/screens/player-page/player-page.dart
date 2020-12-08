@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:guess_it_app/screens/admin-panel-page/admin-panel-page.dart';
 import 'package:guess_it_app/screens/game-page/game-page.dart';
-import 'package:guess_it_app/screens/game-panel/game-panel.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'dart:developer';
+
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 class Data {
   String _playerUsername;
@@ -81,6 +81,14 @@ class _PlayerConfigState extends State<PlayerConfig> {
               final response = await http.read('http://10.0.2.2:8081/new-player/'+data._playerUsername);
               log('response: $response');
               if(response.toString() == "success") {
+                // obtain shared preferences
+                final prefs = await SharedPreferences.getInstance();
+
+                // set value
+                prefs.setString('username', data._playerUsername);
+
+
+
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => GamePage(data : data)),

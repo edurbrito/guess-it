@@ -97,11 +97,11 @@ class Worker():
 
             else:
                 self.active = 0
-                return "No sessions comming"
+                return "No sessions coming"
         except Exception as e:
             print(e)
             self.active = 0
-            return "No sessions comming"
+            return "No sessions coming"
         
 
 def create_app(config_file="settings.py"):
@@ -241,7 +241,7 @@ def create_app(config_file="settings.py"):
                 
                 worker.setDefinition(msg)                     
 
-            return json.dumps({'success': msg})
+            return msg
 
         except Exception as e:
             print(e)
@@ -275,7 +275,7 @@ def create_app(config_file="settings.py"):
             time = str(datetime.strptime(datetime.now().strftime("%Y-%m-%d %H:%M"), "%Y-%m-%d %H:%M") + timedelta(seconds=10))
             time = time[0:len(time) - 3]
 
-            new_game_session('{"dateHour": "' + time  + '", "duration": 2, "words": ["a", "b"]}')
+            new_game_session('{"dateHour": "' + time  + '", "duration": 2, "words": ["albertina", "b"]}')
 
             db.session.add(code1)
             db.session.add(p1)

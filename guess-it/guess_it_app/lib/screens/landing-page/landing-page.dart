@@ -1,12 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:guess_it_app/screens/admin-code-page/admin-code-page.dart';
+import 'package:guess_it_app/screens/definitions-page/definitions-page.dart';
+import 'package:guess_it_app/screens/game-page/game-page.dart';
 import 'package:guess_it_app/screens/leaderboards-page/leaderboards-page.dart';
 import 'package:guess_it_app/screens/player-page/player-page.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:toast/toast.dart';
 
 class LandingPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    String response;
     return Scaffold(
       body:
       Column(
@@ -37,11 +43,35 @@ class LandingPanel extends StatelessWidget {
                 SizedBox(height: 40),
                 Container(
                   child: RaisedButton(
-                    onPressed: () => {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => PlayerConfig()),
-                      ),
+                    onPressed: () async {
+                      final prefs = await SharedPreferences.getInstance();
+
+                      // Try reading data from the counter key. If it doesn't exist, return 0.
+                      final username = prefs.getString('username') ?? "";
+
+                      response = await http.read('http://10.0.2.2:8081/get-messages/' + "anonymous");
+
+                      if (response == "No sessions coming" || response == "Session has ended" || response.contains("Next session starts at")) {
+                        prefs.remove("username");
+                        Toast.show(response, context, duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM);
+                        return;
+                      }
+
+                      if (username != "") {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) =>
+                              GamePage(data: new Data(username))),
+                        );
+                      }
+
+                      else {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) =>
+                              PlayerConfig()),
+                        );
+                      }
                     },
                     color: Colors.white,
                     textColor: Colors.black54,
@@ -80,7 +110,7 @@ class LandingPanel extends StatelessWidget {
                         onPressed: () => {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => Leaderboards()),
+                            MaterialPageRoute(builder: (context) => DefinitionsPanel()),
                           ),
                         },
                         color: Colors.white,
