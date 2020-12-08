@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:guess_it_app/screens/admin-code-page/admin-code-page.dart';
+import 'package:guess_it_app/screens/leaderboards-page/leaderboards-page.dart';
 import 'package:guess_it_app/screens/player-page/player-page.dart';
 
 class LandingPanel extends StatelessWidget {
@@ -63,31 +64,93 @@ class LandingPanel extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  FlatButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => AdminCode()),
-                      );
-                    },
-                    child: Text(
-                      'Enter as Admin',
-                      style: TextStyle(
-                          fontSize: 16.0,
-                          color: Colors.white,
-                          decoration: TextDecoration.underline
+            child: Align(
+              alignment: FractionalOffset.bottomCenter,
+              child: MaterialButton(
+                onPressed: () => {},
+                child:
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: <Widget>[
+                    SizedBox(
+                      width:50,
+                      child:
+                      RaisedButton(
+                        onPressed: () => {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Leaderboards()),
+                          ),
+                        },
+                        color: Colors.white,
+                        textColor: Colors.black54,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0)
+                        ),
+                        padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                        elevation: 5,
+                        colorBrightness: Brightness.dark,
+                        child: Icon(
+                          Icons.list_alt_sharp,
+                          color: Colors.black54,
+                          size: 24.0,
+                          semanticLabel: 'Settings',
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                    Container(child:
+                      FlatButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => AdminCode()),
+                          );
+                        },
+                        child: Text(
+                          'Enter as Admin',
+                          style: TextStyle(
+                              fontSize: 16.0,
+                              color: Colors.white,
+                              decoration: TextDecoration.underline
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width:50,
+                      child:
+                      RaisedButton(
+                        onPressed: () => {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Leaderboards()),
+                          ),
+                        },
+                        color: Colors.white,
+                        textColor: Colors.black54,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0)
+                        ),
+                        padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                        elevation: 5,
+                        colorBrightness: Brightness.dark,
+                        child: Icon(
+                          Icons.leaderboard,
+                          color: Colors.black54,
+                          size: 24.0,
+                          semanticLabel: 'Leaderboards',
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 10),
+
+                  ],
+                ),
               ),
             ),
           ),
+
         ],
       ),
       backgroundColor: Color.fromRGBO(134, 232, 214, 1.0),
