@@ -31,7 +31,7 @@ class _LeaderboardsState extends State<Leaderboards> {
   List<User> _leaderboards = new List<User>();
   List<String> _leaders;
 
-  _get_leaderbords() async {
+  _get_leaderboards() async {
 
     final response = await http.read('http://10.0.2.2:8081/get-leaderboard');
     var tagObjsJson = jsonDecode(response) as List;
@@ -50,7 +50,7 @@ class _LeaderboardsState extends State<Leaderboards> {
 
   @override
   Widget build(BuildContext context) {
-    _get_leaderbords();
+    _get_leaderboards();
     return Scaffold(
       backgroundColor: Color.fromRGBO(134, 232, 214, 1.0),
       body: Container(
@@ -62,7 +62,7 @@ class _LeaderboardsState extends State<Leaderboards> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget> [
                   Text(
-                    'Leaderbords',
+                    'Leaderboards',
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 25.0,

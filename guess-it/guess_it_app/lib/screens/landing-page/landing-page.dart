@@ -131,6 +131,7 @@ class LandingPanel extends StatelessWidget {
                     ),
                     Container(child:
                       FlatButton(
+                        key: Key('Enter As Admin'),
                         onPressed: () {
                           Navigator.push(
                             context,
