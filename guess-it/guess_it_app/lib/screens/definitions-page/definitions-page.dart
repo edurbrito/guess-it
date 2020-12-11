@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -39,6 +40,7 @@ class _DefinitionsPanelState extends State<DefinitionsPanel> {
 
   @override
   Widget build(BuildContext context) {
+    log('LITENS1: $litems');
     return Scaffold(
       backgroundColor: Color.fromRGBO(134, 232, 214, 1.0),
       body: Container(
@@ -68,44 +70,35 @@ class _DefinitionsPanelState extends State<DefinitionsPanel> {
             ),
             SizedBox(height: 60),
             Container(
-              height: 300.0,
-              width: 350.0,
+              height: 350.0,
+              width: 360.0,
               decoration: BoxDecoration(
                 color: Colors.white,
+                border: Border.all(
+                  color: Colors.black87,
+                ),
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: ListWheelScrollView(
-                itemExtent: 80,
-                diameterRatio: 10,
-                children: [
-                  Column(
-                    children: <Widget>[
-                      new Expanded(
-                          child: new ListView.separated(
-                            padding: const EdgeInsets.all(8),
-                            itemCount: litems.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return RichText(
-                                textAlign: TextAlign.start,
-                                text: TextSpan(
-                                  style: TextStyle(fontSize: 18, color: Colors.black),
-                                  children: litems[index],
-                                ),
-                              );
-                            },
-                            separatorBuilder: (BuildContext context, int index) =>
-                            const Divider(),
-                          )),
-                    ],
-                  ),
-                ]
-              ),
+              child: new ListView.separated(
+                padding: const EdgeInsets.all(12),
+                itemCount: litems.length,
+                itemBuilder: (BuildContext context, int index) {
+                  log('INDEX: ${litems[index]}');
+                  return RichText(
+                    textAlign: TextAlign.start,
+                    text: TextSpan(
+                      style: TextStyle(fontSize: 18, color: Colors.black),
+                      children: litems[index],
+                    ),
+                  );
+                },
+                separatorBuilder: (BuildContext context, int index) =>
+                const Divider(),
+              )
             ),
           ],
         ),
       )
-
-
     );
   }
   getDefinitions() async {
