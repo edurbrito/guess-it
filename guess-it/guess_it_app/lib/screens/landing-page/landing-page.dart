@@ -210,9 +210,9 @@ class LandingPanelState extends State<LandingPanel> {
     var tagObjsJson = jsonDecode(response) as List;
 
     _leaderboards = tagObjsJson.map((tagJson) => User.fromJson(tagJson)).toList();
-    while(_leaderboards.length<4)
+    while(_leaderboards.length<3)
     {
-      _leaderboards.add(new User("anonimous", 0));
+      _leaderboards.add(new User("", ""));
 
     }
     _leaders = new List<String>();
@@ -224,12 +224,12 @@ class LandingPanelState extends State<LandingPanel> {
 
 class User{
   String name;
-  int points;
+  String points;
 
   User(this.name, this.points);
 
   factory User.fromJson(dynamic json) {
-    return User(json['nickname'] as String, json['points'] as int);
+    return User(json['nickname'] as String, (json['points'] as int).toString());
   }
 
   @override
