@@ -44,6 +44,7 @@ class _AdminCodeState extends State<AdminCode> {
                 borderRadius: BorderRadius.all(Radius.circular(18.0)),
               ),
               child: TextField(
+                key: Key('AdminCode'),
                 obscureText: true,
                 textAlign: TextAlign.center,
                 controller: _codeController,

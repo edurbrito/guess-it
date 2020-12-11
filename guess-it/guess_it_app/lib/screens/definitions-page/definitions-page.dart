@@ -40,7 +40,6 @@ class _DefinitionsPanelState extends State<DefinitionsPanel> {
 
   @override
   Widget build(BuildContext context) {
-    log('LITENS1: $litems');
     return Scaffold(
       backgroundColor: Color.fromRGBO(134, 232, 214, 1.0),
       body: Container(
@@ -83,7 +82,6 @@ class _DefinitionsPanelState extends State<DefinitionsPanel> {
                 padding: const EdgeInsets.all(12),
                 itemCount: litems.length,
                 itemBuilder: (BuildContext context, int index) {
-                  log('INDEX: ${litems[index]}');
                   return RichText(
                     textAlign: TextAlign.start,
                     text: TextSpan(
@@ -107,7 +105,6 @@ class _DefinitionsPanelState extends State<DefinitionsPanel> {
 
     var decodedMessage = jsonDecode(response) as List;
     lDefs = decodedMessage.map((defJson) => Definitions.fromJson(defJson)).toList();
-    print('Decoded MEsssage $lDefs');
 
     for(int i = 0; i < lDefs.length; i++) {
       List<TextSpan> listSpans = [];
@@ -119,7 +116,6 @@ class _DefinitionsPanelState extends State<DefinitionsPanel> {
       listSpans.add(TextSpan(text: lDefs[i].definition));
       litems.add(listSpans);
     }
-    print('LITENS: $litems');
     setState(() {});
   }
 }
