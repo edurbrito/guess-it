@@ -1,40 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-
-
-
-class User{
-  String name;
-  int points;
-
-  User(this.name, this.points);
-
-  factory User.fromJson(dynamic json) {
-    return User(json['nickname'] as String, json['points'] as int);
-  }
-
-  @override
-  String toString() {
-    return '${this.name} - ${this.points}';
-  }
-}
-
+import 'package:guess_it_app/screens/landing-page/landing-page.dart';
 
 class Leaderboards extends StatefulWidget {
+  List<User> leaderboards = new List<User>();
+  List<String> leaders = new List<String>();
+  _LeaderboardsState leaderboardsState;
+
+  Leaderboards(this.leaderboards, this.leaders);
+
   @override
-  _LeaderboardsState createState() => _LeaderboardsState();
+  _LeaderboardsState createState() {
+    this.leaderboardsState = _LeaderboardsState();
+    this.leaderboardsState.setLeaderboads(this.leaderboards);
+    this.leaderboardsState.setLeaders(this.leaders);
+    return this.leaderboardsState;
+  }
 }
 
 class _LeaderboardsState extends State<Leaderboards> {
   List<User> _leaderboards = new List<User>();
   List<String> _leaders;
 
-  @override
-  void initState() {
-    super.initState();
-    getLeaderBoards();
+  setLeaderboads(List<User> leaderboards) {
+    this._leaderboards = leaderboards;
+  }
+
+  setLeaders(List<String> leaders) {
+    this._leaders = leaders;
   }
 
   @override
@@ -246,25 +239,5 @@ class _LeaderboardsState extends State<Leaderboards> {
         ),
       ),
     );
-  }
-  getLeaderBoards() async {
-
-    final response =
-    await http.read('http://10.0.2.2:8081/get-leaderboard');
-
-    var tagObjsJson = jsonDecode(response) as List;
-
-    _leaderboards = tagObjsJson.map((tagJson) => User.fromJson(tagJson)).toList();
-    while(_leaderboards.length<4)
-    {
-      _leaderboards.add(new User("anonymous", 0));
-
-    }
-    _leaders = new List<String>();
-    for (var i = 3; i < _leaderboards.length; i++) {
-      _leaders.add((i+1).toString() + ". " + _leaderboards[i].toString());
-    }
-    print('LEADERS: $_leaders');
-    setState(() {});
   }
 }
