@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_driver/driver_extension.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:guess_it_app/main.dart';
 import 'package:guess_it_app/screens/admin-code-page/admin-code-page.dart';
 import 'package:guess_it_app/screens/landing-page/landing-page.dart';
 import 'package:mockito/mockito.dart';

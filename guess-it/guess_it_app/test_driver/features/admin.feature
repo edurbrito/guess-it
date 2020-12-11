@@ -1,4 +1,4 @@
-Feature: Nova
+Feature: Entering as an Admin
 
   Scenario: Entering as an admin
     Given I am in the "LandingPanel"
