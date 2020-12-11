@@ -123,11 +123,18 @@ class LandingPanelState extends State<LandingPanel> {
                       width:50,
                       child:
                       RaisedButton(
-                        onPressed: () => {
-                          Navigator.push(
+                        onPressed: () async {
+                          response = await http.read('http://10.0.2.2:8081/get-messages/' + "anonymous");
+
+                          if (response == "No sessions coming" || response == "Session has ended") {
+                            Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) => DefinitionsPanel()),
-                          ),
+                            );
+                          }
+                          else {
+                            Toast.show("Not available yet", context, duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM);
+                          }
                         },
                         color: Colors.white,
                         textColor: Colors.black54,

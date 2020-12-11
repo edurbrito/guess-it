@@ -83,7 +83,7 @@ class _DefinitionsPanelState extends State<DefinitionsPanel> {
                       new Expanded(
                           child: new ListView.separated(
                             padding: const EdgeInsets.all(8),
-                            itemCount: lDefs.length,
+                            itemCount: litems.length,
                             itemBuilder: (BuildContext context, int index) {
                               return RichText(
                                 textAlign: TextAlign.start,

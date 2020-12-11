@@ -87,7 +87,13 @@ class Worker():
                         db.session.commit()
                         self.currentDefinition = [""]
                         self.currentPoints = [0]
+                    self.messages = []          
+                    for j in range(25):
+                        self.messages.append("")
+                    self.currentMessage = 0
                     self.active = 0
+                    self.words = []
+                    self.currentWord = 0
                     return "Session has ended"
 
                 if nickname == self.getLeader():
@@ -96,10 +102,22 @@ class Worker():
                     return json.dumps({"leader": False, "leaderName": self.getLeader(), "definition" : self.currentDefinition[len(self.currentDefinition) - 1], "word" : self.words[self.currentWord].shadow_word, "messages": self.messages})
 
             else:
+                self.messages = []          
+                for j in range(25):
+                    self.messages.append("")
+                self.currentMessage = 0
+                self.words = []
+                self.currentWord = 0
                 self.active = 0
                 return "No sessions coming"
         except Exception as e:
             print(e)
+            self.messages = []          
+            for j in range(25):
+                self.messages.append("")
+            self.currentMessage = 0
+            self.words = []
+            self.currentWord = 0
             self.active = 0
             return "No sessions coming"
         
@@ -269,17 +287,26 @@ def create_app(config_file="settings.py"):
 
             p1 = Player(nickname="eduardo")
             p2 = Player(nickname="pedro")
+            p3 = Player(nickname="paulo")
+            p4 = Player(nickname="ponte")
+            p5 = Player(nickname="daniel")
 
             worker.addPlayer(p1.nickname)
             worker.addPlayer(p2.nickname)
+            worker.addPlayer(p3.nickname)
+            worker.addPlayer(p4.nickname)
+            worker.addPlayer(p5.nickname)
             time = str(datetime.strptime(datetime.now().strftime("%Y-%m-%d %H:%M"), "%Y-%m-%d %H:%M") + timedelta(seconds=10))
             time = time[0:len(time) - 3]
 
-            new_game_session('{"dateHour": "' + time  + '", "duration": 2, "words": ["albertina", "b"]}')
+            new_game_session('{"dateHour": "' + time  + '", "duration": 3, "words": ["software", "flutter", "agile"]}')
 
             db.session.add(code1)
             db.session.add(p1)
             db.session.add(p2)
+            db.session.add(p3)
+            db.session.add(p4)
+            db.session.add(p5)
             db.session.commit()
 
         except Exception as e:
