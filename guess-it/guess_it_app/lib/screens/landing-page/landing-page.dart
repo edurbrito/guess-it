@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:guess_it_app/screens/admin-code-page/admin-code-page.dart';
@@ -9,7 +11,21 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 
-class LandingPanel extends StatelessWidget {
+class LandingPanel extends StatefulWidget {
+  @override
+  LandingPanelState createState() => LandingPanelState();
+
+}
+
+class LandingPanelState extends State<LandingPanel> {
+  List<User> _leaderboards = new List<User>();
+  List<String> _leaders;
+
+  @override
+  void initState() {
+    getLeaderBoards();
+  }
+
   @override
   Widget build(BuildContext context) {
     String response;
@@ -155,7 +171,7 @@ class LandingPanel extends StatelessWidget {
                         onPressed: () => {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => Leaderboards()),
+                            MaterialPageRoute(builder: (context) => Leaderboards(this._leaderboards, this._leaders)),
                           ),
                         },
                         color: Colors.white,
@@ -186,5 +202,38 @@ class LandingPanel extends StatelessWidget {
       ),
       backgroundColor: Color.fromRGBO(134, 232, 214, 1.0),
     );
+  }
+  getLeaderBoards() async {
+
+    final response = await http.read('http://10.0.2.2:8081/get-leaderboard');
+
+    var tagObjsJson = jsonDecode(response) as List;
+
+    _leaderboards = tagObjsJson.map((tagJson) => User.fromJson(tagJson)).toList();
+    while(_leaderboards.length<4)
+    {
+      _leaderboards.add(new User("anonimous", 0));
+
+    }
+    _leaders = new List<String>();
+    for (var i = 3; i < _leaderboards.length; i++) {
+      _leaders.add((i+1).toString() + ". " + _leaderboards[i].toString());
+    }
+  }
+}
+
+class User{
+  String name;
+  int points;
+
+  User(this.name, this.points);
+
+  factory User.fromJson(dynamic json) {
+    return User(json['nickname'] as String, json['points'] as int);
+  }
+
+  @override
+  String toString() {
+    return '${this.name} - ${this.points}';
   }
 }
