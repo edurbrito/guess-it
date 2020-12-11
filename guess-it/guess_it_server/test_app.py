@@ -42,6 +42,12 @@ def test_new_game_session(client):
     rv = client.get('/new-game-session/' + '{"dateHour": "' + time  + '", "duration": 2, "words": ["albertina", "b"]}')
     assert b'fail' in rv.data
 
+    # time = str(datetime.strptime(datetime.now().strftime("%Y-%m-%d %H:%M"), "%Y-%m-%d %H:%M") + timedelta(minutes=10))
+    # time = time[0:len(time) - 3]
+
+    # rv = client.get('/new-game-session/' + '{"dateHour": "' + time  + '", "duration": 2, "words": ["albertina", "b"]}')
+    # assert b'success' in rv.data
+
 def test_new_player(client):
     rv = client.get("/new-player/pedro")
     assert b'fail' in rv.data
@@ -55,7 +61,7 @@ def test_get_messages(client):
     assert b'{"leader": false, "leaderName": "eduardo", "definition": "", "word":' in rv.data
     assert b'"messages": ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""]}' in rv.data
     rv = client.get("/get-messages/eduardo")
-    assert b'{"leader": true, "leaderName": "eduardo", "definition": "", "word": "albertina", "messages": ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""]}' in rv.data
+    assert b'{"leader": true, "leaderName": "eduardo", "definition": "", "word": "software", "messages": ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""]}' in rv.data
     rv = client.get("/get-messages/manel")
     assert b'{"leader": false, "leaderName": "eduardo", "definition": "", "word":' in rv.data
     assert b'"messages": ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""]}' in rv.data
@@ -67,9 +73,9 @@ def test_new_message(client):
     assert b'messageeee' in rv.data
     rv = client.get('/new-message/{"nickname": "pedro", "message": "messageeee"}')
     assert b'messageeee' in rv.data
-    rv = client.get('/new-message/{"nickname": "pedro", "message": "albertina"}')
+    rv = client.get('/new-message/{"nickname": "pedro", "message": "software"}')
     assert b'YOU GOT IT!!' in rv.data
-    rv = client.get('/new-message/{"nickname": "joaquim", "message": "albert"}')
+    rv = client.get('/new-message/{"nickname": "joaquim", "message": "sodtwre"}')
     assert b'YOU ARE CLOSE!!' in rv.data
 
     rv = client.get("/get-messages/pedro")
@@ -77,9 +83,9 @@ def test_new_message(client):
 
 def test_leaderboard(client):
     rv = client.get("/get-leaderboard")
-    assert b'[{"nickname": "pedro", "points": 1}, {"nickname": "eduardo", "points": 0}, {"nickname": "joaquim", "points": 0}]' in rv.data
+    assert b'[{"nickname": "pedro", "points": 1}, {"nickname": "eduardo", "points": 0}, {"nickname": "paulo", "points": 0}, {"nickname": "ponte", "points": 0}, {"nickname": "daniel", "points": 0}, {"nickname": "joaquim", "points": 0}]' in rv.data
 
 def test_get_definitions(client):
     rv = client.get("/get-definitions")
-    assert b'[{"word": "albertina", "definition": null}, {"word": "b", "definition": null}]' in rv.data
+    assert b'[{"word": "software", "definition": null}, {"word": "flutter", "definition": null}, {"word": "agile", "definition": null}]' in rv.data
 

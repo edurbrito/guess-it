@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from difflib import SequenceMatcher
 
 from flask import Flask, render_template, request
-from extensions import db, AdminCode, Schedule, GuessItSession, GameRound, Definition, Player
+from extensions import db, AdminCode, Schedule, GuessItSession, GameRound, Definition, Player, text
 
 class Worker():
 
@@ -54,9 +54,10 @@ class Worker():
     def getCurrentState(self, nickname):
         try:
             time = datetime.now().strftime("%Y-%m-%d %H:%M")
-            schedule = Schedule.query.filter(Schedule.dateHourEnd >= time).one()
+            schedule = Schedule.query.filter(Schedule.dateHourEnd >= time).order_by(text("dateHour desc")).one()
             session = GuessItSession.query.filter(GuessItSession.Schedule == schedule).one()
             if session != None:
+                self.active = 1
                 if schedule.dateHour > time or len(self.players) == 0: 
                     self.currentWord = 0
                     return "Next session starts at " + schedule.dateHour
@@ -72,7 +73,8 @@ class Worker():
                                 self.words[self.lastWord].addPoints(sum(self.currentPoints))
                                 definition = Definition.query.filter(Definition.GameRound == self.words[self.lastWord]).one()
                                 definition.definition = ", ".join(self.currentDefinition[1:])
-                                db.session.commit()
+                                if(definition.definition != ""):
+                                    db.session.commit()
                                 self.currentDefinition = [""]
                                 self.currentPoints = [0]
                                 self.lastWord = self.currentWord
@@ -84,7 +86,8 @@ class Worker():
                         self.words[self.currentWord].addPoints(sum(self.currentPoints))
                         definition = Definition.query.filter(Definition.GameRound == self.words[self.currentWord]).one()
                         definition.definition = ", ".join(self.currentDefinition[1:])
-                        db.session.commit()
+                        if(definition.definition != ""):
+                            db.session.commit()
                         self.currentDefinition = [""]
                         self.currentPoints = [0]
                     self.messages = []          
@@ -94,6 +97,7 @@ class Worker():
                     self.active = 0
                     self.words = []
                     self.currentWord = 0
+                    self.lastWord = 0
                     return "Session has ended"
 
                 if nickname == self.getLeader():
@@ -108,6 +112,7 @@ class Worker():
                 self.currentMessage = 0
                 self.words = []
                 self.currentWord = 0
+                self.lastWord = 0
                 self.active = 0
                 return "No sessions coming"
         except Exception as e:
@@ -118,6 +123,7 @@ class Worker():
             self.currentMessage = 0
             self.words = []
             self.currentWord = 0
+            self.lastWord = 0
             self.active = 0
             return "No sessions coming"
         
@@ -225,7 +231,7 @@ def create_app(config_file="settings.py"):
     def new_message(message):
         try:
             if not worker.active:
-                raise Exception()
+                raise Exception("Worker not active")
 
             # {"nickname": "nicknameeeee", "message": "messageeee"}
             _message = json.loads(message)
@@ -234,7 +240,7 @@ def create_app(config_file="settings.py"):
             
             player = Player.query.filter_by(nickname=nickname).first()
             if player is None:
-                raise Exception()
+                raise Exception("Player not exists")
             
             if nickname != worker.getLeader():
                 if msg == worker.words[worker.currentWord].word or worker.getCurrentWord() in msg.replace(" ", "").lower():
@@ -255,7 +261,7 @@ def create_app(config_file="settings.py"):
             else:
                 ratio = SequenceMatcher(a=worker.getCurrentWord(),b=msg.replace(" ", "").lower()).ratio()
                 if msg == worker.getCurrentWord() or worker.getCurrentWord() in msg.replace(" ", "").lower() or ratio > 0.7:
-                    raise Exception()
+                    raise Exception("Leader cannot say the word")
                 
                 worker.setDefinition(msg)                     
 
@@ -277,7 +283,7 @@ def create_app(config_file="settings.py"):
     def get_definitions():
         return json.dumps(Definition.definitions())
         
-
+    # Adding some data to the database when the server inits
     with app.app_context():
         try:
             db.drop_all()
