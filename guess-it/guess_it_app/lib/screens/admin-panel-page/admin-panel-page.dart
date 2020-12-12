@@ -45,7 +45,7 @@ class _AdminPanelState extends State<AdminPanel> {
                       textDirection: TextDirection.ltr,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 18,
+                        fontSize: 22,
                         color: Colors.white,
                         decoration: TextDecoration.none,
                       ),
@@ -100,7 +100,7 @@ class _AdminPanelState extends State<AdminPanel> {
                     child: Text(
                       'List of Words',
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 22,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                         decoration: TextDecoration.none,
@@ -133,8 +133,7 @@ class _AdminPanelState extends State<AdminPanel> {
                                     litems.removeAt(index);
                                     lwords.removeAt(index);
                                   });
-                                  Scaffold.of(context)
-                                      .showSnackBar(SnackBar(content: Text("$item deleted")));
+                                  Toast.show("$item deleted", context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
                                 },
                                 background: Container(color: Colors.red),
                                 child: Center(
@@ -166,11 +165,13 @@ class _AdminPanelState extends State<AdminPanel> {
                               hintText: "Type a word ...",
                             ),
                             onSubmitted: (text) async {
-                              String word = '"' + text + '"';
-                              litems.add(word);
-                              lwords.add(text);
-                              eCtrl.clear();
-                              setState(() {});
+                              if(text != "") {
+                                String word = '"' + text + '"';
+                                litems.add(word);
+                                lwords.add(text);
+                                eCtrl.clear();
+                                setState(() {});
+                              }
                             }
                           ),
                         ),
@@ -190,7 +191,9 @@ class _AdminPanelState extends State<AdminPanel> {
                       String extension = '{"dateHour": "' + pickedDate.year.toString() +
                           '-' + pickedDate.month.toString() + '-' + pickedDate.day.toString() + ' ' + pickedTime.hour.toString() + ':' + pickedTime.minute.toString() +
                           '", "duration": ' + _durationController.text + ', "words": ' + litems.toString() +'}';
+                      print('$extension');
                       final response = await http.read('http://10.0.2.2:8081/new-game-session/'+ extension);
+                      print('$extension');
                       if(response.toString() == "success") {
                         Navigator.push(
                           context,
@@ -199,7 +202,6 @@ class _AdminPanelState extends State<AdminPanel> {
                       }
                       else {
                         Toast.show("Wrong parameters", context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
-                        // _codeController.clear();
                       }
                     },
                     child: Text(

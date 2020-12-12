@@ -40,7 +40,7 @@ class _AdminCodeState extends State<AdminCode> {
               margin: const EdgeInsets.symmetric(horizontal: 8.0),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(18.0)),
+                borderRadius: BorderRadius.all(Radius.circular(20.0)),
               ),
               child: TextField(
                 key: Key('text-field'),

@@ -65,7 +65,7 @@ class _DefinitionsPanelState extends State<DefinitionsPanel> {
                 ),
               ],
             ),
-            SizedBox(height: 60),
+            SizedBox(height: 40),
             Container(
               height: 350.0,
               width: 360.0,

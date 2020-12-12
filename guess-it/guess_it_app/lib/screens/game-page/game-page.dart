@@ -203,9 +203,11 @@ class _GamePageState extends State<GamePage> {
                             ),
                             onSubmitted: (text) async {
                               if (!guessed) {
-                                setState(() {
-                                  introducedWord = eCtrl.text;
-                                });
+                                if(eCtrl.text != "") {
+                                  setState(() {
+                                    introducedWord = eCtrl.text;
+                                  });
+                                }
 
                                 String add = '{"nickname": "' + this.userName + '", "message": "' + introducedWord + '"}';
                                 final response = await http.read('http://10.0.2.2:8081/new-message/' + add);
