@@ -1,11 +1,9 @@
-import 'dart:async';
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:guess_it_app/screens/landing-page/landing-page.dart';
 import 'package:http/http.dart' as http;
+import 'package:toast/toast.dart';
 
 class AdminPanel extends StatefulWidget {
   @override
@@ -17,6 +15,7 @@ class _AdminPanelState extends State<AdminPanel> {
   TimeOfDay pickedTime;
   TextEditingController _durationController = TextEditingController();
   List<String> litems = [];
+  List<String> lwords = [];
   final TextEditingController eCtrl = new TextEditingController();
 
   @override
@@ -28,174 +27,192 @@ class _AdminPanelState extends State<AdminPanel> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      key: Key('AdminPanel'),
-      color: Color.fromRGBO(134, 232, 214, 1.0),
-      child: Column(
-        children: [
-          SizedBox(height: 50),
-          Container(
-            alignment: Alignment(-0.8, -0.8),
-            child: Text(
-              'Schedule:',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 25,
-                color: Colors.white,
-                decoration: TextDecoration.none,
-              ),
-            ),
-          ),
-          SizedBox(height: 20),
-          Container(
-            color: Colors.white,
-            width: 350.0,
-            height: 190.0,
-            child: Scaffold(
-              resizeToAvoidBottomInset: false,
-              body: SingleChildScrollView(
-                child: Column(
-                  children: <Widget>[
-                    ListTile(
-                      title: Text(
-                          "Date: ${pickedDate.day} / ${pickedDate.month} / ${pickedDate.year}"),
-                      leading: Icon(Icons.date_range),
-                      trailing: Icon(Icons.arrow_drop_down),
-                      onTap: _pickDate,
-                    ),
-                    ListTile(
-                      title: Text(
-                          "Time: ${pickedTime.hour} : ${pickedTime.minute}"),
-                      leading: Icon(Icons.watch_later),
-                      trailing: Icon(Icons.arrow_drop_down),
-                      onTap: _pickTime,
-                    ),
-                    Container(
-                        padding: EdgeInsets.fromLTRB(18.0, 0.0, 10.0, 30.0),
-                        child: TextField(
-                          controller: _durationController,
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            labelText: "Duration (in minutes)",
-                          ),
-                        )),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          SizedBox(height: 50),
-          Container(
-            alignment: Alignment(-0.75, 0),
-            child: Text(
-              'List of Words:',
-              style: TextStyle(
-                fontSize: 25,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-                decoration: TextDecoration.none,
-              ),
-            ),
-          ),
-          SizedBox(height: 20),
-          Container(
-              color: Colors.white,
-              height: 250.0,
-              width: 350.0,
-              child: Scaffold(
-                resizeToAvoidBottomInset: false,
-                body: Column(
-                  children: <Widget>[
-                    TextField(
-                      controller: eCtrl,
-                      textAlign: TextAlign.center,
-                      decoration: InputDecoration(
-                        hintText: "Add a word",
+    return MaterialApp(
+      home: Scaffold(
+        resizeToAvoidBottomInset: true,
+        backgroundColor: Color.fromRGBO(134, 232, 214, 1.0),
+        body: Container(
+          padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+          child: SingleChildScrollView(
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(height: 75),
+                  Container(
+                    child: Text(
+                      'Schedule',
+                      textDirection: TextDirection.ltr,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        color: Colors.white,
+                        decoration: TextDecoration.none,
                       ),
-                      onSubmitted: (text) {
-                        String word = '"' + text + '"';
-                        litems.add(word);
-                        eCtrl.clear();
-                        setState(() {});
-                      },
                     ),
-                    new Expanded(
-                      child: new ListView.separated(
-                        padding: const EdgeInsets.all(8),
-                        itemCount: litems.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          final item = litems[index];
-                          return Dismissible(
-                            key: Key(item),
-                            onDismissed: (direction) {
-                              setState(() {
-                                litems.removeAt(index);
-                              });
-                              Scaffold.of(context)
-                                  .showSnackBar(SnackBar(content: Text("$item deleted")));
+                  ),
+                  SizedBox(height: 15),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(
+                        color: Colors.black87,
+                      ),
+                      borderRadius: BorderRadius.all(Radius.circular(20))
+                    ),
+                    width: 360.0,
+                    height: 190.0,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          ListTile(
+                            title: Text(
+                              "Date: ${pickedDate.day} / ${pickedDate.month} / ${pickedDate.year}"),
+                            leading: Icon(Icons.date_range),
+                            trailing: Icon(Icons.arrow_drop_down),
+                            onTap: _pickDate,
+                          ),
+                          ListTile(
+                            title: Text(
+                              "Time: ${pickedTime.hour} : ${pickedTime.minute}"),
+                            leading: Icon(Icons.watch_later),
+                            trailing: Icon(Icons.arrow_drop_down),
+                            onTap: _pickTime,
+                          ),
+                          Container(
+                            padding: EdgeInsets.fromLTRB(18.0, 0.0, 10.0, 30.0),
+                            child: TextField(
+                              controller: _durationController,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                labelText: "Duration (in minutes)",
+                              ),
+                            )
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 35),
+                  Container(
+                    child: Text(
+                      'List of Words',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        decoration: TextDecoration.none,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 15),
+                  Container(
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                          height: 250.0,
+                          width: 360.0,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(
+                                color: Colors.black87,
+                              ),
+                              borderRadius: BorderRadius.all(Radius.circular(20))
+                          ),
+                          child: new ListView.separated(
+                            padding: const EdgeInsets.all(8),
+                            itemCount: lwords.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              final item = lwords[index];
+                              return Dismissible(
+                                key: Key(item),
+                                onDismissed: (direction) {
+                                  setState(() {
+                                    litems.removeAt(index);
+                                    lwords.removeAt(index);
+                                  });
+                                  Scaffold.of(context)
+                                      .showSnackBar(SnackBar(content: Text("$item deleted")));
+                                },
+                                background: Container(color: Colors.red),
+                                child: Center(
+                                    child: Text(
+                                      lwords[index],
+                                      style: TextStyle(fontSize: 18, color: Colors.black, decoration: TextDecoration.none),
+                                    )
+                                ),
+                              );
                             },
-                            background: Container(color: Colors.red),
-                            child: Center(child: Text(litems[index])),
-                          );
-                        },
-                        separatorBuilder: (BuildContext context, int index) => const Divider(),
-                      )
-                    )
-                  ],
-                )
-              )
-          ),
-          SizedBox(height: 30),
-          RaisedButton(
-            color: Colors.white,
-            textColor: Colors.black54,
-            padding: EdgeInsets.fromLTRB(80, 0, 80, 0),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0)),
-            elevation: 5,
-            colorBrightness: Brightness.dark,
-            onPressed: () async {
-              String extension = '{"dateHour": "' + pickedDate.year.toString() +
-                  '-' + pickedDate.month.toString() + '-' + pickedDate.day.toString() + ' ' + pickedTime.hour.toString() + ':' + pickedTime.minute.toString() +
-                  '", "duration": ' + _durationController.text + ', "words": ' + litems.toString() +'}';
-              log('extension: $extension');
-              final response = await http.read('http://10.0.2.2:8081/new-game-session/'+ extension);
-              log('response: $response');
-              if(response.toString() == "success") {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => LandingPanel()),
-                );
-              }
-              else {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: Text("Wrong parameters"),
-                      actions: <Widget>[
-                        FlatButton(
-                          child: Text('Ok'),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
+                            separatorBuilder: (BuildContext context, int index) => const Divider(),
+                          ),
+                        ),
+                        Divider(height: 10, thickness: 5, color: Color.fromRGBO(134, 232, 214, 1.0)),
+                        Container(
+                          width: 360.0,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(
+                              color: Colors.black87,
+                            ),
+                            borderRadius: BorderRadius.all(Radius.circular(20))
+                          ),
+                          padding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
+                          child: TextField(
+                            controller: eCtrl,
+                            textAlign: TextAlign.center,
+                            decoration: InputDecoration(
+                              hintText: "Type a word ...",
+                            ),
+                            onSubmitted: (text) async {
+                              String word = '"' + text + '"';
+                              litems.add(word);
+                              lwords.add(text);
+                              eCtrl.clear();
+                              setState(() {});
+                            }
+                          ),
                         ),
                       ],
-                    );
-                  },
-                );
-                // _codeController.clear();
-              }
-
-            },
-            child: Text(
-              "SAVE",
-              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                    )
+                  ),
+                  SizedBox(height: 30),
+                  RaisedButton(
+                    color: Colors.white,
+                    textColor: Colors.black54,
+                    padding: EdgeInsets.fromLTRB(80, 0, 80, 0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0)),
+                    elevation: 5,
+                    colorBrightness: Brightness.dark,
+                    onPressed: () async {
+                      String extension = '{"dateHour": "' + pickedDate.year.toString() +
+                          '-' + pickedDate.month.toString() + '-' + pickedDate.day.toString() + ' ' + pickedTime.hour.toString() + ':' + pickedTime.minute.toString() +
+                          '", "duration": ' + _durationController.text + ', "words": ' + litems.toString() +'}';
+                      final response = await http.read('http://10.0.2.2:8081/new-game-session/'+ extension);
+                      if(response.toString() == "success") {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => LandingPanel()),
+                        );
+                      }
+                      else {
+                        Toast.show("Wrong parameters", context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+                        // _codeController.clear();
+                      }
+                    },
+                    child: Text(
+                      "SAVE",
+                      style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                    ),
+                  )
+                ],
+              ),
             ),
           )
-        ],
-      ),
+        ),
+      )
     );
   }
 
@@ -218,6 +235,12 @@ class _AdminPanelState extends State<AdminPanel> {
     TimeOfDay time = await showTimePicker(
       context: context,
       initialTime: pickedTime,
+      builder: (BuildContext context, Widget child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+          child: child,
+        );
+      },
     );
 
     if (time != null) {

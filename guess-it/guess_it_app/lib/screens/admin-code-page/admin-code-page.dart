@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:guess_it_app/screens/admin-panel-page/admin-panel-page.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'dart:developer';
-
+import 'package:toast/toast.dart';
 
 
 class AdminCode extends StatefulWidget {
@@ -66,7 +64,7 @@ class _AdminCodeState extends State<AdminCode> {
           textColor: Colors.black54,
           padding: EdgeInsets.fromLTRB(80, 0, 80, 0),
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0)),
+              borderRadius: BorderRadius.circular(20.0)),
           elevation: 5,
           colorBrightness: Brightness.dark,
           onPressed: () async {
@@ -75,28 +73,14 @@ class _AdminCodeState extends State<AdminCode> {
             });
             final response = await http.read('http://10.0.2.2:8081/admin-code/'+_codeText);
             if(response.toString() == "success") {
+              _codeController.clear();
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => AdminPanel()),
               );
             }
             else {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: Text("Wrong password"),
-                    actions: <Widget>[
-                      FlatButton(
-                        child: Text('Ok'),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ],
-                  );
-                },
-              );
+              Toast.show("Wrong Password", context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
               _codeController.clear();
             }
           },

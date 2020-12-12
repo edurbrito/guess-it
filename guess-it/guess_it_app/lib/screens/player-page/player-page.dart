@@ -50,7 +50,7 @@ class _PlayerConfigState extends State<PlayerConfig> {
               margin: const EdgeInsets.symmetric(horizontal: 8.0),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(18.0)),
+                borderRadius: BorderRadius.all(Radius.circular(20.0)),
               ),
               child: TextField(
                 key: Key('text-field'),
@@ -67,61 +67,59 @@ class _PlayerConfigState extends State<PlayerConfig> {
         ),
       ),
       floatingActionButton: Container(
-          child: RaisedButton(
-            key: Key('ready-button'),
-            color: Colors.white,
-            textColor: Colors.black54,
-            padding: EdgeInsets.fromLTRB(80, 0, 80, 0),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0)),
-            elevation: 5,
-            colorBrightness: Brightness.dark,
-            onPressed: () async {
-              setState(() {
-                data = new Data(_codeController.text);
-              });
-              log('code: ${data._playerUsername}');
-              final response = await http.read('http://10.0.2.2:8081/new-player/'+data._playerUsername);
-              log('response: $response');
-              if(response.toString() == "success") {
-                // obtain shared preferences
-                final prefs = await SharedPreferences.getInstance();
+        child: RaisedButton(
+          key: Key('ready-button'),
+          color: Colors.white,
+          textColor: Colors.black54,
+          padding: EdgeInsets.fromLTRB(80, 0, 80, 0),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0)),
+          elevation: 5,
+          colorBrightness: Brightness.dark,
+          onPressed: () async {
+            setState(() {
+              data = new Data(_codeController.text);
+            });
+            log('code: ${data._playerUsername}');
+            final response = await http.read('http://10.0.2.2:8081/new-player/'+data._playerUsername);
+            log('response: $response');
+            if(response.toString() == "success") {
+              // obtain shared preferences
+              final prefs = await SharedPreferences.getInstance();
 
-                // set value
-                prefs.setString('username', data._playerUsername);
+              // set value
+              prefs.setString('username', data._playerUsername);
 
-
-
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => GamePage(data : data)),
-                );
-              }
-              else {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: Text("Username already used"),
-                      actions: <Widget>[
-                        FlatButton(
-                          child: Text('Ok'),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                );
-                _codeController.clear();
-              }
-            },
-            child: Text(
-              "I AM READY!",
-              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-            ),
-          )
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => GamePage(data : data)),
+              );
+            }
+            else {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text("Username already used"),
+                    actions: <Widget>[
+                      FlatButton(
+                        child: Text('Ok'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+              _codeController.clear();
+            }
+          },
+          child: Text(
+            "I AM READY!",
+            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+          ),
+        )
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       resizeToAvoidBottomPadding: false,

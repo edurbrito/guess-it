@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:guess_it_app/screens/admin-code-page/admin-code-page.dart';
@@ -94,7 +93,7 @@ class LandingPanelState extends State<LandingPanel> {
                     color: Colors.white,
                     textColor: Colors.black54,
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0)
+                        borderRadius: BorderRadius.circular(20.0)
                     ),
                     padding: EdgeInsets.fromLTRB(80, 0, 80, 0),
                     elevation: 5,
@@ -135,13 +134,13 @@ class LandingPanelState extends State<LandingPanel> {
                             );
                           }
                           else {
-                            Toast.show("Not available yet", context, duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM);
+                            Toast.show("Not available yet", context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
                           }
                         },
                         color: Colors.white,
                         textColor: Colors.black54,
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0)
+                            borderRadius: BorderRadius.circular(20.0)
                         ),
                         padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                         elevation: 5,
@@ -187,7 +186,7 @@ class LandingPanelState extends State<LandingPanel> {
                         color: Colors.white,
                         textColor: Colors.black54,
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0)
+                            borderRadius: BorderRadius.circular(20.0)
                         ),
                         padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                         elevation: 5,
@@ -201,20 +200,17 @@ class LandingPanelState extends State<LandingPanel> {
                       ),
                     ),
                     SizedBox(width: 10),
-
                   ],
                 ),
               ),
             ),
           ),
-
         ],
       ),
       backgroundColor: Color.fromRGBO(134, 232, 214, 1.0),
     );
   }
   getLeaderBoards() async {
-
     final response = await http.read('http://10.0.2.2:8081/get-leaderboard');
 
     var tagObjsJson = jsonDecode(response) as List;

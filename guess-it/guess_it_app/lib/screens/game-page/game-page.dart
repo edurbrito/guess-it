@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:guess_it_app/screens/landing-page/landing-page.dart';
@@ -139,12 +138,12 @@ class _GamePageState extends State<GamePage> {
                         ),
                         ListTile(
                           title: Center(
-                              child: RichText(
-                                text: TextSpan(
-                                  style: TextStyle(fontSize: 30, color: Colors.black,),
-                                  children: _getHiddenString(),
-                                ),
-                              )
+                            child: RichText(
+                              text: TextSpan(
+                                style: TextStyle(fontSize: 30, color: Colors.black,),
+                                children: _getHiddenString(),
+                              ),
+                            )
                           ),
                         ),
                       ],
@@ -153,40 +152,16 @@ class _GamePageState extends State<GamePage> {
                 ),
                 SizedBox(height: 35),
                 Center(child:
-                Text("GUESS THE WORD",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)
-                ),
+                  Text("GUESS THE WORD",
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)
+                  ),
                 ),
                 SizedBox(height: 4),
                 Container(
                     child: Column(
                       children: <Widget>[
                         Container(
-                            height: 350.0,
-                            width: 360.0,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                border: Border.all(
-                                  color: Colors.black87,
-                                ),
-                                borderRadius: BorderRadius.all(Radius.circular(20))
-                            ),
-                            child: new ListView.separated(
-                              padding: const EdgeInsets.all(12),
-                              itemCount: litems.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return RichText(
-                                  text: TextSpan(
-                                    style: TextStyle(fontSize: 18, color: Colors.black),
-                                    children: litems[index],
-                                  ),
-                                );
-                              },
-                              separatorBuilder: (BuildContext context, int index) => const Divider(),
-                            )
-                        ),
-                        Divider(height: 10, thickness: 5, color: Color.fromRGBO(134, 232, 214, 1.0)),
-                        Container(
+                          height: 350.0,
                           width: 360.0,
                           decoration: BoxDecoration(
                               color: Colors.white,
@@ -194,6 +169,30 @@ class _GamePageState extends State<GamePage> {
                                 color: Colors.black87,
                               ),
                               borderRadius: BorderRadius.all(Radius.circular(20))
+                          ),
+                          child: new ListView.separated(
+                            padding: const EdgeInsets.all(12),
+                            itemCount: litems.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return RichText(
+                                text: TextSpan(
+                                  style: TextStyle(fontSize: 18, color: Colors.black),
+                                  children: litems[index],
+                                ),
+                              );
+                            },
+                            separatorBuilder: (BuildContext context, int index) => const Divider(),
+                          )
+                        ),
+                        Divider(height: 10, thickness: 5, color: Color.fromRGBO(134, 232, 214, 1.0)),
+                        Container(
+                          width: 360.0,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(
+                              color: Colors.black87,
+                            ),
+                            borderRadius: BorderRadius.all(Radius.circular(20))
                           ),
                           padding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
                           child: TextField(
@@ -243,12 +242,14 @@ class _GamePageState extends State<GamePage> {
   }
 
   _getTips() {
-    return Text(this.definition,
-        style: TextStyle(
-          fontSize: 18,
-          color: Color.fromRGBO(100, 100, 100, 1.0),
-          fontWeight: FontWeight.bold,
-        ));
+    return Text(
+      this.definition,
+      style: TextStyle(
+        fontSize: 18,
+        color: Color.fromRGBO(100, 100, 100, 1.0),
+        fontWeight: FontWeight.bold,
+      )
+    );
   }
 
   /* The following function returns an array of TextSpans based on the format of the word inside the "secretWord" variable.
@@ -259,10 +260,10 @@ class _GamePageState extends State<GamePage> {
 
     for (int i = 0; i < secretWord.length; i++) {
       temp.add(
-          new TextSpan(
-              text: secretWord[i],
-              style: TextStyle(letterSpacing: 2)
-          )
+        new TextSpan(
+            text: secretWord[i],
+            style: TextStyle(letterSpacing: 2)
+        )
       );
     }
 

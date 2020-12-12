@@ -36,10 +36,11 @@ class _LeaderboardsState extends State<Leaderboards> {
       key: Key('LeaderboardPage'),
       backgroundColor: Color.fromRGBO(134, 232, 214, 1.0),
       body: Container(
-        margin: EdgeInsets.fromLTRB(40.0, 80.0, 40.0, 40.0),
+        margin: EdgeInsets.fromLTRB(15, 0, 15, 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
+            SizedBox(height: 75),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget> [
@@ -66,10 +67,10 @@ class _LeaderboardsState extends State<Leaderboards> {
                 ),
               ],
             ),
-            SizedBox(height: 60),
+            SizedBox(height: 40),
             Container(
               height: 150.0,
-              width: 350.0,
+              width: 360.0,
               decoration: BoxDecoration(
                 color: Colors.white,
                 image: const DecorationImage(
@@ -217,23 +218,28 @@ class _LeaderboardsState extends State<Leaderboards> {
             SizedBox(height: 40),
             Container(
               height: 300.0,
-              width: 350.0,
+              width: 360.0,
               decoration: BoxDecoration(
                 color: Colors.white,
+                border: Border.all(
+                  color: Colors.black87,
+                ),
                 borderRadius: BorderRadius.circular(20),
               ),
               child:
               ListWheelScrollView(
-                  itemExtent: 60,
-                  diameterRatio: 10,
-                  children: _leaders.map((item) =>
-                  new Text(item,textAlign: TextAlign.start,style:
-                  TextStyle(
-                    fontSize: 20,
-                    color: Colors.blue,
-                  ),
+                itemExtent: 60,
+                diameterRatio: 10,
+                children: _leaders.map((item) =>
+                  new Text(
+                    item,
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.blue,
+                    ),
                   )
-                  ).toList()
+                ).toList()
               ),
             ),
           ],
