@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
     ));
     return MaterialApp(
       title: 'GuessIt App',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
