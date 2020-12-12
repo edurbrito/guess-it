@@ -33,6 +33,7 @@ class _LeaderboardsState extends State<Leaderboards> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: Key('LeaderboardPage'),
       backgroundColor: Color.fromRGBO(134, 232, 214, 1.0),
       body: Container(
         margin: EdgeInsets.fromLTRB(40.0, 80.0, 40.0, 40.0),

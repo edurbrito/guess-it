@@ -9,8 +9,9 @@ class ExpectToBeInPage extends Given1WithWorld<String, FlutterWorld> {
   RegExp get pattern => RegExp(r"I am in the {string}");
 
   @override
-  Future<void> executeStep(String name) async {
-    bool isInPage = await FlutterDriverUtils.isPresent(world.driver, find.byType(name));
-    expectMatch(isInPage, true);
+  Future<void> executeStep(String page) async {
+    final locator = find.byValueKey(page);
+    var locatorExists = await FlutterDriverUtils.isPresent(world.driver, locator);
+    expectMatch(true, locatorExists);
   }
 }

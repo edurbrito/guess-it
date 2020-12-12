@@ -29,6 +29,7 @@ class _AdminPanelState extends State<AdminPanel> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      key: Key('AdminPanel'),
       color: Color.fromRGBO(134, 232, 214, 1.0),
       child: Column(
         children: [

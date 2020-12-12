@@ -30,6 +30,7 @@ class LandingPanelState extends State<LandingPanel> {
   Widget build(BuildContext context) {
     String response;
     return Scaffold(
+      key: Key('LandingPage'),
       body:
       Column(
         children: <Widget>[
@@ -59,6 +60,7 @@ class LandingPanelState extends State<LandingPanel> {
                 SizedBox(height: 40),
                 Container(
                   child: RaisedButton(
+                    key: Key('play-button'),
                     onPressed: () async {
                       final prefs = await SharedPreferences.getInstance();
 
@@ -154,7 +156,7 @@ class LandingPanelState extends State<LandingPanel> {
                     ),
                     Container(child:
                       FlatButton(
-                        key: Key('Enter As Admin'),
+                        key: Key('admin-button'),
                         onPressed: () {
                           Navigator.push(
                             context,
@@ -175,6 +177,7 @@ class LandingPanelState extends State<LandingPanel> {
                       width:50,
                       child:
                       RaisedButton(
+                        key: Key('leaderboard-button'),
                         onPressed: () => {
                           Navigator.push(
                             context,

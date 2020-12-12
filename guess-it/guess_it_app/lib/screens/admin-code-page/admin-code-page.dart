@@ -19,6 +19,7 @@ class _AdminCodeState extends State<AdminCode> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: Key('AdminCode'),
       backgroundColor: Color.fromRGBO(134, 232, 214, 1.0),
       body: Container(
         margin: EdgeInsets.fromLTRB(40.0, 140.0, 40.0, 300.0),
@@ -44,7 +45,7 @@ class _AdminCodeState extends State<AdminCode> {
                 borderRadius: BorderRadius.all(Radius.circular(18.0)),
               ),
               child: TextField(
-                key: Key('AdminCode'),
+                key: Key('text-field'),
                 obscureText: true,
                 textAlign: TextAlign.center,
                 controller: _codeController,
@@ -60,6 +61,7 @@ class _AdminCodeState extends State<AdminCode> {
       ),
       floatingActionButton: Container(
         child: RaisedButton(
+          key: Key('login-button'),
           color: Colors.white,
           textColor: Colors.black54,
           padding: EdgeInsets.fromLTRB(80, 0, 80, 0),

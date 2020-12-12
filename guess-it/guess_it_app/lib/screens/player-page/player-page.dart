@@ -27,6 +27,7 @@ class _PlayerConfigState extends State<PlayerConfig> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: Key('PlayerPage'),
       backgroundColor: Color.fromRGBO(134, 232, 214, 1.0),
       body: Container(
         margin: EdgeInsets.fromLTRB(40.0, 140.0, 40.0, 300.0),
@@ -52,6 +53,7 @@ class _PlayerConfigState extends State<PlayerConfig> {
                 borderRadius: BorderRadius.all(Radius.circular(18.0)),
               ),
               child: TextField(
+                key: Key('text-field'),
                 textAlign: TextAlign.center,
                 controller: _codeController,
                 decoration: InputDecoration(
@@ -66,6 +68,7 @@ class _PlayerConfigState extends State<PlayerConfig> {
       ),
       floatingActionButton: Container(
           child: RaisedButton(
+            key: Key('ready-button'),
             color: Colors.white,
             textColor: Colors.black54,
             padding: EdgeInsets.fromLTRB(80, 0, 80, 0),

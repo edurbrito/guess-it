@@ -97,6 +97,7 @@ class _GamePageState extends State<GamePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: Key('GamePage'),
       resizeToAvoidBottomInset: true,
       backgroundColor: Color.fromRGBO(134, 232, 214, 1.0),
       body: Container(
