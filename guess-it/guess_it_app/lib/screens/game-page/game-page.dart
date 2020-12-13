@@ -161,7 +161,7 @@ class _GamePageState extends State<GamePage> {
                     child: Column(
                       children: <Widget>[
                         Container(
-                          height: 350.0,
+                          height: 300.0,
                           width: 360.0,
                           decoration: BoxDecoration(
                               color: Colors.white,

@@ -61,7 +61,13 @@ class LandingPanelState extends State<LandingPanel> {
                       // Try reading data from the counter key. If it doesn't exist, return 0.
                       final username = prefs.getString('username') ?? "";
 
-                      response = await http.read('http://10.0.2.2:8081/get-messages/' + "anonymous");
+                      try{
+                        response = await http.read('http://10.0.2.2:8081/get-messages/' + "anonymous");
+                      }
+                      catch(e){
+                        prefs.remove("username");
+                        return;
+                      }
 
                       if (response == "No sessions coming" || response == "Session has ended" || response.contains("Next session starts at")) {
                         prefs.remove("username");
