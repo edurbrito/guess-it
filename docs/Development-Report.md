@@ -349,13 +349,19 @@ Changelogs for the different releases of our project can be found [here](https:/
 ---
 ## Test
 
-There are several ways of documenting testing activities, and quality assurance in general, being the most common: a strategy, a plan, test case specifications, and test checklists.
+To make sure the app works properly, we've developed some tests in order to see if the implementation of any feature hasn't affected others. For this purpose, we wrote three types of tests:
 
-In this section it is only expected to include the following:
-* test plan describing the list of features to be tested and the testing methods and tools;
-* test case specifications to verify the functionalities, using unit tests and acceptance tests.
- 
-A good practice is to simplify this, avoiding repetitions, and automating the testing actions as much as possible.
+* Acceptance Tests with Gherkin
+
+We wrote 4 of these tests, which allowed us to test the most important features of the flutter app, such as entering as an admin, seeing the Leaderboard Page, and actually joining a game session.
+
+* Unit Tests - Flutter
+
+These tests allowed us to test some features similar to those mentioned above, but with a different approach - using unit tests.
+
+* Unit Tests - Server
+
+We've also developed some Python unit tests, to make sure that our local server works properly. This way, we could test if the server connection was successfuly established, and if some of its features were running correctly, such as checking the admin code or receiving a new message.
 
 ---
 ## Configuration and change management
