@@ -42,12 +42,6 @@ def test_new_game_session(client):
     rv = client.get('/new-game-session/' + '{"dateHour": "' + time  + '", "duration": 2, "words": ["albertina", "b"]}')
     assert b'fail' in rv.data
 
-    # time = str(datetime.strptime(datetime.now().strftime("%Y-%m-%d %H:%M"), "%Y-%m-%d %H:%M") + timedelta(minutes=10))
-    # time = time[0:len(time) - 3]
-
-    # rv = client.get('/new-game-session/' + '{"dateHour": "' + time  + '", "duration": 2, "words": ["albertina", "b"]}')
-    # assert b'success' in rv.data
-
 def test_new_player(client):
     rv = client.get("/new-player/pedro")
     assert b'fail' in rv.data

@@ -307,10 +307,10 @@ def create_app(config_file="settings.py"):
             worker.addPlayer(p3.nickname)
             worker.addPlayer(p4.nickname)
             worker.addPlayer(p5.nickname)
-            time = str(datetime.strptime(datetime.now().strftime("%Y-%m-%d %H:%M"), "%Y-%m-%d %H:%M") + timedelta(seconds=60))
+            time = str(datetime.strptime(datetime.now().strftime("%Y-%m-%d %H:%M"), "%Y-%m-%d %H:%M") + timedelta(seconds=10))
             time = time[0:len(time) - 3]
-            print(time)
-            new_game_session('{"dateHour": "' + time  + '", "duration": 2, "words": ["software", "flutter"]}')
+
+            new_game_session('{"dateHour": "' + time  + '", "duration": 3, "words": ["software", "flutter", "agile"]}')
 
             db.session.add(code1)
             db.session.add(p1)
