@@ -15,6 +15,7 @@ def get_all():
 
 def players():
     
+    get('http://0.0.0.0:8081/get-messages/eduardo')
     sleep(2)
     get_all()
     sleep(5)
