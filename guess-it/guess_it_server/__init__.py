@@ -78,6 +78,10 @@ class Worker():
                                 self.currentDefinition = [""]
                                 self.currentPoints = [0]
                                 self.lastWord = self.currentWord
+                                self.messages = []          
+                                for j in range(25):
+                                    self.messages.append("")
+                                self.currentMessage = 0
                         found = True
                         break
                 
@@ -117,6 +121,7 @@ class Worker():
                 return "No sessions coming"
         except Exception as e:
             print(e)
+            return "Error"
             self.messages = []          
             for j in range(25):
                 self.messages.append("")

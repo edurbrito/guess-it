@@ -21,11 +21,6 @@ class LandingPanelState extends State<LandingPanel> {
   List<String> _leaders;
 
   @override
-  void initState() {
-    getLeaderBoards();
-  }
-
-  @override
   Widget build(BuildContext context) {
     String response;
     return Scaffold(
@@ -177,11 +172,13 @@ class LandingPanelState extends State<LandingPanel> {
                       child:
                       RaisedButton(
                         key: Key('leaderboard-button'),
-                        onPressed: () => {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => Leaderboards(this._leaderboards, this._leaders)),
-                          ),
+                        onPressed: () {
+                          getLeaderBoards();
+                          if(this._leaderboards.length > 0)
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => Leaderboards(this._leaderboards, this._leaders)),
+                            );
                         },
                         color: Colors.white,
                         textColor: Colors.black54,
