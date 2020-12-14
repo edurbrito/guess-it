@@ -347,19 +347,27 @@ The Admin creates the game, filling the forms and setting the options, and the P
 Changelogs for the different releases of our project can be found [here](https://github.com/FEUP-ESOF-2020-21/open-cx-t4g3-esofagos/releases).
 
 ---
+
+## Demo
+
+A presentation-ready *demo* can be watched in the following animated gif, where an environment with multiple players interacting and playing against each other is shown. All the enumerated functionalities and user stories are visibly implemented and well integrated.
+
+![Demo Presentation](images/esof-presentation.gif)
+
+---
 ## Test
 
 To make sure the app works properly, we've developed some tests in order to see if the implementation of any feature hasn't affected others. For this purpose, we wrote three types of tests:
 
-* Acceptance Tests with Gherkin
+* [Acceptance Tests with Gherkin](../guess-it/guess_it_app/test_driver)
 
 We wrote 4 of these tests, which allowed us to test the most important features of the flutter app, such as entering as an admin, seeing the Leaderboard Page, and actually joining a game session.
 
-* Unit Tests - Flutter
+* [Unit Tests - Flutter](../guess-it/guess_it_app/test)
 
 These tests allowed us to test some features similar to those mentioned above, but with a different approach - using unit tests.
 
-* Unit Tests - Server
+* [Unit Tests - Server](../guess-it/guess_it_server/test_app.py)
 
 We've also developed some Python unit tests, to make sure that our local server works properly. This way, we could test if the server connection was successfuly established, and if some of its features were running correctly, such as checking the admin code or receiving a new message.
 
