@@ -22,7 +22,7 @@ def players():
     get('http://localhost:8081/new-message/{"nickname": "eduardo", "message": "Something you can code or program"}')
     
     get_all()
-    sleep(10)
+    sleep(3)
     get('http://localhost:8081/new-message/{"nickname": "daniel", "message": "progrm"}')
     
     get_all()
@@ -30,7 +30,7 @@ def players():
     get('http://localhost:8081/new-message/{"nickname": "ponte", "message": "program"}')
     
     get_all()
-    sleep(6)
+    sleep(4)
     get('http://localhost:8081/new-message/{"nickname": "pedro", "message": "softwre"}')
 
     get_all()
@@ -38,7 +38,7 @@ def players():
     get('http://localhost:8081/new-message/{"nickname": "pedro", "message": "software"}')
     
     get_all()
-    sleep(5)
+    sleep(3)
     get('http://localhost:8081/new-message/{"nickname": "daniel", "message": "ahhh stupid"}')
     
     get_all()
@@ -54,22 +54,22 @@ def players():
     get('http://localhost:8081/new-message/{"nickname": "ponte", "message": "softwr"}')
 
     get_all()
-    sleep(2)
+    sleep(1)
     get('http://localhost:8081/new-message/{"nickname": "ponte", "message": "software"}')
 
     get_all()
-    sleep(15)
+    sleep(4)
     get_all()
     sleep(3)
     get_all()
-    sleep(2)
+    sleep(1)
     get('http://localhost:8081/new-message/{"nickname": "ponte", "message": "ready for another rouuuund"}')
     sleep(1)
     get('http://localhost:8081/new-message/{"nickname": "daniel", "message": "lets goo"}')
     sleep(1)
-    get('http://localhost:8081/new-message/{"nickname": "pedro", "message": "growing framework"}')
+    get('http://localhost:8081/new-message/{"nickname": "pedro", "message": "A growing framework"}')
     sleep(1)
-    get('http://localhost:8081/new-message/{"nickname": "pedro", "message": "growing framework"}')
+    get('http://localhost:8081/new-message/{"nickname": "pedro", "message": "An amazing library"}')
 
     get_all()
     sleep(3)
@@ -94,5 +94,13 @@ def players():
     get_all()
     sleep(3)
     get('http://localhost:8081/new-message/{"nickname": "eduardo", "message": "dont know"}')
+
+    get_all()
+    sleep(1)
+    get('http://localhost:8081/new-message/{"nickname": "eduardo", "message": "feup"}')
+
+    get_all()
+    sleep(1)
+    get('http://localhost:8081/new-message/{"nickname": "eduardo", "message": "cant get it"}')
 
 players()
