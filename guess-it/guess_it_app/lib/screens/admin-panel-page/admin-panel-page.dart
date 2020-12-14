@@ -159,6 +159,7 @@ class _AdminPanelState extends State<AdminPanel> {
                           ),
                           padding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
                           child: TextField(
+                            key: Key('wordInput'),
                             controller: eCtrl,
                             textAlign: TextAlign.center,
                             decoration: InputDecoration(
