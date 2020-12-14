@@ -17,12 +17,44 @@ class _AdminPanelState extends State<AdminPanel> {
   List<String> litems = [];
   List<String> lwords = [];
   final TextEditingController eCtrl = new TextEditingController();
+  String hours;
+  String minutes;
+  String month;
+  String day;
 
   @override
   void initState() {
     super.initState();
     pickedDate = DateTime.now();
     pickedTime = TimeOfDay.now();
+
+    if(pickedTime.hour < 10) {
+      hours = '0'+ "${pickedTime.hour}";
+    }
+    else {
+      hours = "${pickedTime.hour}";
+    }
+
+    if(pickedTime.minute < 10) {
+      minutes = '0'+ "${pickedTime.minute}";
+    }
+    else {
+      minutes = "${pickedTime.minute}";
+    }
+
+    if(pickedDate.month < 10) {
+      month = '0'+ "${pickedDate.month}";
+    }
+    else {
+      month = "${pickedDate.month}";
+    }
+
+    if(pickedDate.day < 10) {
+      day = '0'+ "${pickedDate.day}";
+    }
+    else {
+      day = "${pickedDate.day}";
+    }
   }
 
   @override
@@ -68,14 +100,14 @@ class _AdminPanelState extends State<AdminPanel> {
                         children: <Widget>[
                           ListTile(
                             title: Text(
-                              "Date: ${pickedDate.day} / ${pickedDate.month} / ${pickedDate.year}"),
+                              "Date: $day / $month / ${pickedDate.year}"),
                             leading: Icon(Icons.date_range),
                             trailing: Icon(Icons.arrow_drop_down),
                             onTap: _pickDate,
                           ),
                           ListTile(
                             title: Text(
-                              "Time: ${pickedTime.hour} : ${pickedTime.minute}"),
+                              "Time: $hours:$minutes"),
                             leading: Icon(Icons.watch_later),
                             trailing: Icon(Icons.arrow_drop_down),
                             onTap: _pickTime,
@@ -190,11 +222,9 @@ class _AdminPanelState extends State<AdminPanel> {
                     colorBrightness: Brightness.dark,
                     onPressed: () async {
                       String extension = '{"dateHour": "' + pickedDate.year.toString() +
-                          '-' + pickedDate.month.toString() + '-' + pickedDate.day.toString() + ' ' + pickedTime.hour.toString() + ':' + pickedTime.minute.toString() +
+                          '-' + month + '-' + day + ' ' + hours + ':' + minutes +
                           '", "duration": ' + _durationController.text + ', "words": ' + litems.toString() +'}';
-                      print('$extension');
                       final response = await http.read('http://10.0.2.2:8081/new-game-session/'+ extension);
-                      print('$extension');
                       if(response.toString() == "success") {
                         Navigator.push(
                           context,
@@ -232,6 +262,20 @@ class _AdminPanelState extends State<AdminPanel> {
         pickedDate = date;
       });
     }
+
+    if(pickedDate.month < 10) {
+      month = '0'+ "${pickedDate.month}";
+    }
+    else {
+      month = "${pickedDate.month}";
+    }
+
+    if(pickedDate.day < 10) {
+      day = '0'+ "${pickedDate.day}";
+    }
+    else {
+      day = "${pickedDate.day}";
+    }
   }
 
   _pickTime() async {
@@ -250,6 +294,20 @@ class _AdminPanelState extends State<AdminPanel> {
       setState(() {
         pickedTime = time;
       });
+    }
+
+    if(pickedTime.hour < 10) {
+      hours = '0'+ "${pickedTime.hour}";
+    }
+    else {
+      hours = "${pickedTime.hour}";
+    }
+
+    if(pickedTime.minute < 10) {
+      minutes = '0'+ "${pickedTime.minute}";
+    }
+    else {
+      minutes = "${pickedTime.minute}";
     }
   }
 }
