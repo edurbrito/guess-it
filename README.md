@@ -1,6 +1,25 @@
-# Guess It
-T4G3 Esofagos
+# Guess It - openCX-esofagos
 
-## Product Vision
+![](docs/images/logo.svg)
 
-The game we created aims to entertain the sessions, empowering conferences with interactive learning. That way, people at a given session can play with each other, have fun and put their knowledge about the subjects to the test.
+A game that aims to empower conferences with interactive learning, so that people, at a given session, can play with each other, have fun and put their knowledge about the subjects to the test.
+
+---
+
+So far, contributions are exclusively made by the initial team, but we hope to open them to the community, in all areas and topics: requirements, technologies, development, experimentation, testing, etc.
+
+Please contact us! 
+
+Thank you!
+
+* [Eduardo Brito](https://github.com/edurbrito)
+
+* [Paulo Ribeiro](https://github.com/PJscp16)
+  
+* [Pedro Ferreira](https://github.com/pdff2000)
+
+* [Pedro Ponte](https://github.com/pedrovponte)
+
+* [Daniel Gonçalves](https://github.com/Esdeath-GK)
+
+The full Development Report can be found [here](docs/Development-Report.md).
