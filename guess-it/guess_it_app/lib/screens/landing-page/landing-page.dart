@@ -1,13 +1,30 @@
+import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:guess_it_app/screens/admin-code-page/admin-code-page.dart';
+import 'package:guess_it_app/screens/definitions-page/definitions-page.dart';
+import 'package:guess_it_app/screens/game-page/game-page.dart';
 import 'package:guess_it_app/screens/leaderboards-page/leaderboards-page.dart';
 import 'package:guess_it_app/screens/player-page/player-page.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:toast/toast.dart';
 
-class LandingPanel extends StatelessWidget {
+class LandingPanel extends StatefulWidget {
+  @override
+  LandingPanelState createState() => LandingPanelState();
+
+}
+
+class LandingPanelState extends State<LandingPanel> {
+  List<User> _leaderboards = new List<User>();
+  List<String> _leaders;
+
   @override
   Widget build(BuildContext context) {
+    String response;
     return Scaffold(
+      key: Key('LandingPage'),
       body:
       Column(
         children: <Widget>[
@@ -37,16 +54,47 @@ class LandingPanel extends StatelessWidget {
                 SizedBox(height: 40),
                 Container(
                   child: RaisedButton(
-                    onPressed: () => {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => PlayerConfig()),
-                      ),
+                    key: Key('play-button'),
+                    onPressed: () async {
+                      final prefs = await SharedPreferences.getInstance();
+
+                      // Try reading data from the counter key. If it doesn't exist, return 0.
+                      final username = prefs.getString('username') ?? "";
+
+                      try{
+                        response = await http.read('http://10.0.2.2:8081/get-messages/' + "anonymous");
+                      }
+                      catch(e){
+                        prefs.remove("username");
+                        return;
+                      }
+
+                      if (response == "No sessions coming" || response == "Session has ended" || response.contains("Next session starts at")) {
+                        prefs.remove("username");
+                        Toast.show(response, context, duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM);
+                        return;
+                      }
+
+                      if (username != "") {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) =>
+                              GamePage(data: new Data(username))),
+                        );
+                      }
+
+                      else {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) =>
+                              PlayerConfig()),
+                        );
+                      }
                     },
                     color: Colors.white,
                     textColor: Colors.black54,
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0)
+                        borderRadius: BorderRadius.circular(20.0)
                     ),
                     padding: EdgeInsets.fromLTRB(80, 0, 80, 0),
                     elevation: 5,
@@ -77,16 +125,23 @@ class LandingPanel extends StatelessWidget {
                       width:50,
                       child:
                       RaisedButton(
-                        onPressed: () => {
-                          Navigator.push(
+                        onPressed: () async {
+                          response = await http.read('http://10.0.2.2:8081/get-messages/' + "anonymous");
+
+                          if (response == "No sessions coming" || response == "Session has ended") {
+                            Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => Leaderboards()),
-                          ),
+                            MaterialPageRoute(builder: (context) => DefinitionsPanel()),
+                            );
+                          }
+                          else {
+                            Toast.show("Not available yet", context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+                          }
                         },
                         color: Colors.white,
                         textColor: Colors.black54,
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0)
+                            borderRadius: BorderRadius.circular(20.0)
                         ),
                         padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                         elevation: 5,
@@ -101,6 +156,7 @@ class LandingPanel extends StatelessWidget {
                     ),
                     Container(child:
                       FlatButton(
+                        key: Key('admin-button'),
                         onPressed: () {
                           Navigator.push(
                             context,
@@ -121,16 +177,19 @@ class LandingPanel extends StatelessWidget {
                       width:50,
                       child:
                       RaisedButton(
-                        onPressed: () => {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => Leaderboards()),
-                          ),
+                        key: Key('leaderboard-button'),
+                        onPressed: () {
+                          getLeaderBoards();
+                          if(this._leaderboards.length > 0)
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => Leaderboards(this._leaderboards, this._leaders)),
+                            );
                         },
                         color: Colors.white,
                         textColor: Colors.black54,
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0)
+                            borderRadius: BorderRadius.circular(20.0)
                         ),
                         padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                         elevation: 5,
@@ -144,16 +203,46 @@ class LandingPanel extends StatelessWidget {
                       ),
                     ),
                     SizedBox(width: 10),
-
                   ],
                 ),
               ),
             ),
           ),
-
         ],
       ),
       backgroundColor: Color.fromRGBO(134, 232, 214, 1.0),
     );
+  }
+  getLeaderBoards() async {
+    final response = await http.read('http://10.0.2.2:8081/get-leaderboard');
+
+    var tagObjsJson = jsonDecode(response) as List;
+
+    _leaderboards = tagObjsJson.map((tagJson) => User.fromJson(tagJson)).toList();
+    while(_leaderboards.length<3)
+    {
+      _leaderboards.add(new User("", ""));
+
+    }
+    _leaders = new List<String>();
+    for (var i = 3; i < _leaderboards.length; i++) {
+      _leaders.add((i+1).toString() + ". " + _leaderboards[i].toString());
+    }
+  }
+}
+
+class User{
+  String name;
+  String points;
+
+  User(this.name, this.points);
+
+  factory User.fromJson(dynamic json) {
+    return User(json['nickname'] as String, (json['points'] as int).toString());
+  }
+
+  @override
+  String toString() {
+    return '${this.name} - ${this.points}';
   }
 }

@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:guess_it_app/screens/admin-panel-page/admin-panel-page.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'dart:developer';
-
+import 'package:toast/toast.dart';
 
 
 class AdminCode extends StatefulWidget {
@@ -19,6 +17,7 @@ class _AdminCodeState extends State<AdminCode> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: Key('AdminCode'),
       backgroundColor: Color.fromRGBO(134, 232, 214, 1.0),
       body: Container(
         margin: EdgeInsets.fromLTRB(40.0, 140.0, 40.0, 300.0),
@@ -41,9 +40,10 @@ class _AdminCodeState extends State<AdminCode> {
               margin: const EdgeInsets.symmetric(horizontal: 8.0),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(18.0)),
+                borderRadius: BorderRadius.all(Radius.circular(20.0)),
               ),
               child: TextField(
+                key: Key('text-field'),
                 obscureText: true,
                 textAlign: TextAlign.center,
                 controller: _codeController,
@@ -59,11 +59,12 @@ class _AdminCodeState extends State<AdminCode> {
       ),
       floatingActionButton: Container(
         child: RaisedButton(
+          key: Key('login-button'),
           color: Colors.white,
           textColor: Colors.black54,
           padding: EdgeInsets.fromLTRB(80, 0, 80, 0),
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0)),
+              borderRadius: BorderRadius.circular(20.0)),
           elevation: 5,
           colorBrightness: Brightness.dark,
           onPressed: () async {
@@ -72,28 +73,14 @@ class _AdminCodeState extends State<AdminCode> {
             });
             final response = await http.read('http://10.0.2.2:8081/admin-code/'+_codeText);
             if(response.toString() == "success") {
+              _codeController.clear();
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => AdminPanel()),
               );
             }
             else {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: Text("Wrong password"),
-                    actions: <Widget>[
-                      FlatButton(
-                        child: Text('Ok'),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ],
-                  );
-                },
-              );
+              Toast.show("Wrong Password", context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
               _codeController.clear();
             }
           },

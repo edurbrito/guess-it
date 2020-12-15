@@ -1,10 +1,8 @@
 import 'dart:convert';
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter/cupertino.dart';
 
 class Definitions {
   String word;
@@ -36,52 +34,67 @@ class _DefinitionsPanelState extends State<DefinitionsPanel> {
   void initState() {
     super.initState();
     getDefinitions();
-    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    if(litems == null) {
-      getDefinitions();
-    }
     return Scaffold(
       backgroundColor: Color.fromRGBO(134, 232, 214, 1.0),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Container(
-            height: 250.0,
-            width: 350.0,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
+      body: Container(
+        margin: EdgeInsets.fromLTRB(40.0, 120.0, 40.0, 40.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget> [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget> [
+                Text(
+                  'Words and Definitons Table',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 22.0,
+                    color: Colors.white,
+                    shadows: [
+                      Shadow(
+                        blurRadius: 5.0,
+                        color: Colors.blue,
+                        offset: Offset(0, 0),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            child: Scaffold(
-              resizeToAvoidBottomInset: false,
-              body: Column(
-                children: <Widget>[
-                  new Expanded(
-                      child: new ListView.separated(
-                        padding: const EdgeInsets.all(8),
-                        itemCount: lDefs.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return RichText(
-                            text: TextSpan(
-                              style: TextStyle(fontSize: 18, color: Colors.black),
-                              children: litems[index],
-                            ),
-                          );
-                        },
-                        separatorBuilder: (BuildContext context, int index) =>
-                        const Divider(),
-                      )),
-                ],
+            SizedBox(height: 40),
+            Container(
+              height: 350.0,
+              width: 360.0,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(
+                  color: Colors.black87,
+                ),
+                borderRadius: BorderRadius.circular(20),
               ),
+              child: new ListView.separated(
+                padding: const EdgeInsets.all(12),
+                itemCount: litems.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return RichText(
+                    textAlign: TextAlign.start,
+                    text: TextSpan(
+                      style: TextStyle(fontSize: 18, color: Colors.black),
+                      children: litems[index],
+                    ),
+                  );
+                },
+                separatorBuilder: (BuildContext context, int index) =>
+                const Divider(),
+              )
             ),
-          ),
-        ],
-      ),
+          ],
+        ),
+      )
     );
   }
   getDefinitions() async {
@@ -90,7 +103,6 @@ class _DefinitionsPanelState extends State<DefinitionsPanel> {
 
     var decodedMessage = jsonDecode(response) as List;
     lDefs = decodedMessage.map((defJson) => Definitions.fromJson(defJson)).toList();
-    print('Decoded MEsssage $lDefs');
 
     for(int i = 0; i < lDefs.length; i++) {
       List<TextSpan> listSpans = [];
@@ -102,7 +114,7 @@ class _DefinitionsPanelState extends State<DefinitionsPanel> {
       listSpans.add(TextSpan(text: lDefs[i].definition));
       litems.add(listSpans);
     }
-    print('LITENS: $litems');
+    setState(() {});
   }
 }
 
