@@ -180,11 +180,6 @@ class LandingPanelState extends State<LandingPanel> {
                         key: Key('leaderboard-button'),
                         onPressed: () {
                           getLeaderBoards();
-                          if(this._leaderboards.length > 0)
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => Leaderboards(this._leaderboards, this._leaders)),
-                            );
                         },
                         color: Colors.white,
                         textColor: Colors.black54,
@@ -228,6 +223,11 @@ class LandingPanelState extends State<LandingPanel> {
     for (var i = 3; i < _leaderboards.length; i++) {
       _leaders.add((i+1).toString() + ". " + _leaderboards[i].toString());
     }
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => Leaderboards(this._leaderboards, this._leaders)),
+    );
   }
 }
 

@@ -60,6 +60,7 @@ class _AdminPanelState extends State<AdminPanel> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      key: Key('AdminPanel'),
       home: Scaffold(
         resizeToAvoidBottomInset: true,
         backgroundColor: Color.fromRGBO(134, 232, 214, 1.0),
