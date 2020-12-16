@@ -28,6 +28,8 @@ Please contact us!
 
 Thank you!
 
+* [Daniel Gonçalves](https://github.com/Esdeath-GK)
+
 * [Eduardo Brito](https://github.com/edurbrito)
 
 * [Paulo Ribeiro](https://github.com/PJscp16)
@@ -36,7 +38,6 @@ Thank you!
 
 * [Pedro Ponte](https://github.com/pedrovponte)
 
-* [Daniel Gonçalves](https://github.com/Esdeath-GK)
 
 ---
 
@@ -369,7 +370,7 @@ These tests allowed us to test some features similar to those mentioned above, b
 
 * [Unit Tests - Server](../guess-it/guess_it_server/test_app.py)
 
-We've also developed some Python unit tests, to make sure that our local server works properly. This way, we could test if the server connection was successfuly established, and if some of its features were running correctly, such as checking the admin code or receiving a new message.
+We've also developed some Python unit tests, to make sure that our local server works properly. This way, we could test if the server connection was successfully established, and if some of its features were running correctly, such as checking the admin code or receiving a new message.
 
 ---
 ## Configuration and change management

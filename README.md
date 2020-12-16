@@ -12,6 +12,8 @@ Please contact us!
 
 Thank you!
 
+* [Daniel Gonçalves](https://github.com/Esdeath-GK)
+
 * [Eduardo Brito](https://github.com/edurbrito)
 
 * [Paulo Ribeiro](https://github.com/PJscp16)
@@ -19,7 +21,5 @@ Thank you!
 * [Pedro Ferreira](https://github.com/pdff2000)
 
 * [Pedro Ponte](https://github.com/pedrovponte)
-
-* [Daniel Gonçalves](https://github.com/Esdeath-GK)
 
 The full Development Report can be found [here](docs/Development-Report.md).

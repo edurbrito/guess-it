@@ -1,6 +1,14 @@
 # Flask Server
 
-#### To create the development environment
+#### Requirements
+
+* Python > 3.6
+* SQLite3
+
+#### To create the development environment 
+
+(under the `guess_it_server` directory)
+
 ##### On Linux
 1. `python3 -m venv env`
 2. `source env/bin/activate`
