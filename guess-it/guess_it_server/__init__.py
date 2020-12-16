@@ -54,9 +54,9 @@ class Worker():
     def getCurrentState(self, nickname):
         try:
             time = datetime.now().strftime("%Y-%m-%d %H:%M")
-            schedule = Schedule.query.filter(Schedule.dateHourEnd >= time).order_by(text("dateHour desc")).one()
+            schedule = Schedule.query.filter(Schedule.dateHourEnd >= time).order_by(text("dateHour desc")).first()
             session = GuessItSession.query.filter(GuessItSession.Schedule == schedule).one()
-            if session != None:
+            if schedule != None and session != None:
                 self.active = 1
                 if schedule.dateHour > time or len(self.players) == 0: 
                     self.currentWord = 0
@@ -120,8 +120,6 @@ class Worker():
                 self.active = 0
                 return "No sessions coming"
         except Exception as e:
-            print(e)
-            return "Error"
             self.messages = []          
             for j in range(25):
                 self.messages.append("")
